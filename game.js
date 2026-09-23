@@ -7,6 +7,9 @@
   const $ = (id) => document.getElementById(id);
   const LEVEL_LABEL = { mudah: 'Mudah', sedang: 'Sedang', sulit: 'Sulit' };
   const MODE = { kamera: 'kamera', keduanya: 'keduanya', sentuh: 'sentuh' };
+  /* Bagian piksel zona yang harus terlihat berubah supaya zona ditandai "kamera
+     melihat ada orang di sini" (umpan balik langsung sebelum jawaban dihitung). */
+  const SEEN_MIN = 0.02;
 
   const S = {
     subject: '', count: 10, level: 'mudah', inputMode: MODE.kamera,
@@ -75,6 +78,16 @@
     } catch (e) { cameras = []; }
   }
 
+  /* getUserMedia bisa menggantung tanpa error (kamera sedang dipakai aplikasi
+     lain). Beri batas waktu supaya muncul pesan yang jelas, bukan
+     "Menyiapkan kamera…" yang tidak berujung. */
+  function denganBatas(p, ms) {
+    return new Promise((resolve, reject) => {
+      const t = setTimeout(() => reject(new Error('BatasWaktuKamera')), ms);
+      p.then(s => { clearTimeout(t); resolve(s); }, e => { clearTimeout(t); reject(e); });
+    });
+  }
+
   async function startCamera(index) {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       cameraError = 'Peramban ini tidak menyediakan akses kamera (butuh HTTPS atau localhost).';
@@ -98,7 +111,13 @@
       for (const video of videoOptions) {
         try {
           stopCamera();
-          stream = await navigator.mediaDevices.getUserMedia({ audio: false, video });
+          const req = navigator.mediaDevices.getUserMedia({ audio: false, video });
+          /* Bila permintaan yang menggantung menyusul datang setelah kita
+             menyerah, langsung hentikan supaya kamera tidak tetap terkunci. */
+          req.then(s => setTimeout(() => {
+            if (s !== stream) s.getTracks().forEach(t => t.stop());
+          }, 0)).catch(() => {});
+          stream = await denganBatas(req, 8000);
           camIndex = deviceId ? index : -1;
           videos().forEach(v => { v.srcObject = stream; v.play().catch(() => {}); });
           cameraError = null;
@@ -106,7 +125,12 @@
           if (vision) { vision.calibrate(); vision.unlock(); }
           updateStageNote(true);
           return true;
-        } catch (err) { lastErr = err; }
+        } catch (err) {
+          lastErr = err;
+          /* Kamera sedang dipakai / tidak merespons: jangan menumpuk permintaan
+             baru, langsung beri tahu pengguna. */
+          if (err && err.message === 'BatasWaktuKamera') break;
+        }
       }
       index = -1;   // mungkin device berubah → daftar ulang lalu coba tanpa deviceId
     }
@@ -118,6 +142,10 @@
 
   function describeCamError(err) {
     const n = err && err.name;
+    if (err && err.message === 'BatasWaktuKamera') {
+      return 'Kamera tidak merespons — mungkin sedang dipakai aplikasi lain. ' +
+        'Tutup aplikasi itu, lalu nyalakan kamera lagi (🔄).';
+    }
     if (n === 'NotAllowedError') return 'Izin kamera ditolak. Izinkan kamera di pengaturan peramban lalu coba lagi.';
     if (n === 'NotFoundError') return 'Kamera tidak ditemukan pada perangkat ini.';
     if (n === 'NotReadableError') return 'Kamera sedang dipakai aplikasi lain. Tutup aplikasi itu lalu coba lagi.';
@@ -186,7 +214,9 @@
     S.startedAt = Date.now();
     $('chipSubject').textContent = $('selSubject').selectedOptions[0].textContent;
     initVision();
-    if (vision) vision.start();
+    /* Latar ruangan diambil ulang setiap permainan dimulai — kamera yang baru
+       menyala beberapa detik lalu bisa sudah berubah paparan/cahayanya. */
+    if (vision) { vision.calibrate(); vision.start(); }
     show('screenPlay');
     renderQuestion();
     if (S.inputMode !== MODE.sentuh && !cameraLive()) startCamera(camIndex);
@@ -213,6 +243,7 @@
   /* Pesan pada area kamera. Hasil render di-cache agar tidak ditulis ulang
      puluhan kali per detik saat vision.js melapor tiap frame. */
   let noteKey = null;
+  let lastVision = null;
   function updateStageNote(force) {
     const note = $('stageNote');
     let key, html;
@@ -227,6 +258,18 @@
     } else if (vision && !vision.ready) {
       key = 'kalibrasi';
       html = 'Bersihkan area di depan kamera sebentar…<br><b>Mengambil latar ruangan</b>.';
+    } else if (vision && vision.bgState === 'menyetel-latar') {
+      key = 'cahaya';
+      html = 'Kamera sedang menyesuaikan cahaya ruangan…<br>' +
+        'Tetap boleh menjawab. Bila terus begini, tekan <b>🎥</b> saat area depan kamera kosong.';
+    } else if (lastVision && lastVision.blocked === 'ganda' && lastVision.blockedMs > 1500) {
+      key = 'ganda';
+      html = 'Terlihat <b>dua gugusan</b> besar di depan kamera, jadi jawaban ditahan.<br>' +
+        'Pastikan hanya satu murid di depan — atau tekan <b>🎥</b> bila ruangan berubah.';
+    } else if (lastVision && lastVision.blocked === 'diam' && lastVision.blockedMs > 2500) {
+      key = 'diam';
+      html = 'Ada murid di depan kamera, tapi belum ada gerakan.<br>' +
+        'Minta murid <b>melangkah</b> ke sisi kiri (BENAR) atau kanan (SALAH).';
     } else {
       key = 'siap';
       html = '';
@@ -349,10 +392,24 @@
       dwellMs: S.dwell,
       onAnswer: (v) => answer(v === 'benar'),
       onUpdate: (st) => {
-        $('barLeft').style.width = Math.min(100, st.left * 220) + '%';
-        $('barRight').style.width = Math.min(100, st.right * 220) + '%';
+        lastVision = st;
+        window.__visionDebug = vision;   // untuk pengujian (tidak dipakai game)
+        /* Umpan balik bertingkat supaya murid selalu tahu kameranya bekerja:
+           1. zona "seen"   = kamera melihat ada orang di sisi itu;
+           2. zona "hot"    = posisi terkunci, batang mulai berjalan;
+           3. batang penuh  = jawaban dihitung (animasi diatur game.css). */
+        $('barLeft').style.width = st.candidate === 'benar' ? Math.round(st.progress * 100) + '%'
+          : (st.sigL >= 0.5 ? '100%' : '0%');
+        $('barRight').style.width = st.candidate === 'salah' ? Math.round(st.progress * 100) + '%'
+          : (st.sigR >= 0.5 ? '100%' : '0%');
         $('zoneLeft').classList.toggle('hot', st.candidate === 'benar');
         $('zoneRight').classList.toggle('hot', st.candidate === 'salah');
+        /* Kamera melihat GERAKAN di sisi ini (belum mulai menghitung): batang
+           berisi samar berkilau berjalan — murid tahu gerakannya terbaca. */
+        $('zoneLeft').classList.toggle('sig', !st.candidate && st.sigL >= 0.5);
+        $('zoneRight').classList.toggle('sig', !st.candidate && st.sigR >= 0.5);
+        $('zoneLeft').classList.toggle('seen', !st.candidate && st.sigL < 0.5 && st.left >= SEEN_MIN);
+        $('zoneRight').classList.toggle('seen', !st.candidate && st.sigR < 0.5 && st.right >= SEEN_MIN);
         updateStageNote();
       }
     });

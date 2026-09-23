@@ -184,7 +184,9 @@ input[type="range"] { width: 100%; accent-color: var(--accent); height: clamp(18
 .stage video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
 
 /* Lebar zona = ZONE_EDGE di vision.js (0,35). Sisanya pita netral 30% di tengah
-   supaya murid yang lewat di tengah tidak dianggap menjawab. */
+   supaya murid yang lewat di tengah tidak dianggap menjawab. vision.js mengikuti
+   pemotongan video (object-fit: cover) sehingga garis zona ini sama dengan batas
+   yang dipakai deteksi di ukuran layar apa pun. */
 .zone {
   position: absolute; top: 0; bottom: 0; width: 35%;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(4px, 1vmin, 14px);
@@ -207,6 +209,43 @@ input[type="range"] { width: 100%; accent-color: var(--accent); height: clamp(18
 .zone-track i { display: block; height: 100%; width: 0; transition: width .1s linear; }
 .zone-left .zone-track i { background: var(--ok); }
 .zone-right .zone-track i { background: var(--danger); }
+
+/* Kamera sudah melihat ada orang di sisi ini, tetapi belum cukup lama untuk
+   menjawab — jadi murid tahu kameranya "melihat" dan perlu berdiri sebentar. */
+.zone-left.seen { box-shadow: inset 0 0 0 3px rgba(47, 208, 123, .55); }
+.zone-right.seen { box-shadow: inset 0 0 0 3px rgba(255, 93, 108, .55); }
+.zone-left.seen .zone-icon, .zone-right.seen .zone-icon { opacity: .85; }
+
+/* Batang kemajuan: isian tumbuh mulus (transisi) dengan garis-garis berjalan,
+   jadi terlihat "sedang menghitung" dan murid tahu harus bertahan di tempat. */
+.zone.hot { animation: zona-denyut .7s ease-in-out infinite alternate; }
+.zone.hot .zone-track { background: rgba(0, 0, 0, .6); box-shadow: 0 0 0 2px rgba(255, 255, 255, .28); }
+.zone.hot .zone-track i {
+  transition: width .09s linear;
+  background-size: 200% 100%;
+  animation: bar-jalan .6s linear infinite;
+}
+.zone-left.hot .zone-track i { background-image: linear-gradient(90deg, #2fd07b, #d6ffe9 45%, #2fd07b); }
+.zone-right.hot .zone-track i { background-image: linear-gradient(90deg, #ff5d6c, #ffdadd 45%, #ff5d6c); }
+
+/* Kamera melihat gerakan di zona ini (belum mulai menghitung): batang penuh,
+   samar, berkilau berjalan — umpan balik sesaat sebelum hitungan dwell mulai. */
+.zone.sig .zone-track { background: rgba(0, 0, 0, .5); box-shadow: 0 0 0 2px rgba(255, 255, 255, .2); }
+.zone.sig .zone-track i {
+  opacity: .38;
+  background-size: 200% 100%;
+  animation: bar-jalan .7s linear infinite;
+}
+.zone-left.sig .zone-track i { background-image: linear-gradient(90deg, #2fd07b, #d6ffe9 45%, #2fd07b); }
+.zone-right.sig .zone-track i { background-image: linear-gradient(90deg, #ff5d6c, #ffdadd 45%, #ff5d6c); }
+
+@keyframes bar-jalan { from { background-position: 0 0; } to { background-position: -200% 0; } }
+@keyframes zona-denyut { from { filter: brightness(.94); } to { filter: brightness(1.14); } }
+@media (prefers-reduced-motion: reduce) {
+  .zone.hot, .zone.hot .zone-track i { animation: none; }
+  .zone.sig, .zone.sig .zone-track i { animation: none; }
+  .zone-track i { transition: width .2s linear; }
+}
 
 .stage-note {
   position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
