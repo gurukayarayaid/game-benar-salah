@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Editor Soal — Game Benar / Salah</title>
+<link rel="icon" href="icon.svg">
+<link rel="stylesheet" href="game.css?v=20260923034710">
+<style>
+  .ed-wrap { margin: auto; width: 100%; max-width: 1100px; display: flex; flex-direction: column;
+             gap: clamp(10px, 1.6vmin, 24px); }
+  .ed-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .ed-toolbar { display: flex; gap: clamp(6px, 1vmin, 14px); flex-wrap: wrap; }
+  .ed-grid { display: grid; gap: clamp(10px, 1.6vmin, 24px); grid-template-columns: 1fr; }
+  @media (min-width: 860px) { .ed-grid { grid-template-columns: 340px 1fr; align-items: start; } }
+  .ed-form { position: sticky; top: 0; display: flex; flex-direction: column; gap: clamp(8px, 1.3vmin, 18px); }
+  .ed-form h3 { font-size: clamp(14px, 1.9vmin, 26px); }
+  .ans-toggle { display: flex; gap: clamp(6px, 1vmin, 14px); }
+  .ans-btn { flex: 1; border-radius: var(--radius); border: 1.5px solid var(--border);
+             background: rgba(8, 14, 32, .4); color: var(--text);
+             padding: clamp(9px, 1.3vmin, 18px); font-size: clamp(13px, 1.7vmin, 22px); font-weight: 700; }
+  .ans-btn.on-true { background: rgba(47, 208, 123, .2); border-color: var(--ok); color: #7dffb5; }
+  .ans-btn.on-false { background: rgba(255, 93, 108, .2); border-color: var(--danger); color: #ffa8b2; }
+  textarea.field-input { resize: vertical; min-height: clamp(60px, 9vmin, 120px); }
+  .field-input { background: rgba(8, 14, 32, .55); border: 1px solid var(--border); color: var(--text);
+    padding: clamp(9px, 1.3vmin, 18px) clamp(10px, 1.2vmin, 18px); border-radius: var(--radius);
+    font-size: clamp(13px, 1.6vmin, 22px); outline: none; width: 100%; font-family: inherit; }
+  .field-input:focus { border-color: var(--accent); }
+  .ed-list { display: flex; flex-direction: column; gap: clamp(6px, 1vmin, 14px); }
+  .q-item { display: flex; gap: clamp(8px, 1.2vmin, 18px); align-items: flex-start;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: clamp(8px, 1.2vmin, 18px) clamp(10px, 1.5vmin, 22px); }
+  .q-item .mark { font-size: 1.4em; line-height: 1.2; flex: 0 0 auto; }
+  .q-item.true .mark { color: var(--ok); }
+  .q-item.false .mark { color: var(--danger); }
+  .q-item .body { flex: 1 1 auto; min-width: 0; }
+  .q-item .body b { display: block; font-size: clamp(13px, 1.7vmin, 22px); line-height: 1.4; overflow-wrap: anywhere; }
+  .q-item .body span { color: var(--muted); font-size: clamp(11px, 1.4vmin, 19px); }
+  .q-item .acts { display: flex; gap: 6px; flex: 0 0 auto; }
+  .mini-btn { width: clamp(30px, 4vmin, 44px); height: clamp(30px, 4vmin, 44px); border-radius: var(--radius);
+    background: rgba(8, 14, 32, .4); border: 1px solid var(--border); font-size: clamp(13px, 1.6vmin, 20px);
+    display: grid; place-items: center; }
+  .mini-btn:hover { border-color: var(--accent); }
+  .mini-btn.del:hover { border-color: var(--danger); color: var(--danger); }
+  .ed-status { color: var(--muted); font-size: clamp(11px, 1.4vmin, 19px); min-height: 1.4em; }
+  .ed-status.ok { color: var(--ok); }
+  .ed-status.err { color: var(--danger); }
+  .hidden-file { display: none; }
+</style>
+</head>
+<body>
+<section class="screen">
+  <div class="ed-wrap">
+
+    <header class="ed-head">
+      <div class="brand">
+        <span class="brand-icon">✏️</span>
+        <div>
+          <h1 style="font-size: clamp(20px, 3.2vmin, 42px);">Editor Soal</h1>
+          <p class="sub">Game Benar / Salah — Kelas 3 SD</p>
+        </div>
+      </div>
+      <div class="ed-toolbar">
+        <button class="ghost-btn" id="btnBack">← Kembali ke game</button>
+        <button class="ghost-btn" id="btnImpor">📥 Impor JSON</button>
+        <button class="ghost-btn" id="btnEkspor">📤 Ekspor JSON</button>
+        <button class="ghost-btn" id="btnFirestore">🔥 Unggah ke Firestore</button>
+      </div>
+    </header>
+
+    <p class="hint" id="edInfo">Soal yang disimpan di sini langsung dipakai game di perangkat ini —
+      tanpa menyunting berkas. Untuk memakainya di semua perangkat, tekan <b>🔥 Unggah ke Firestore</b>
+      atau <b>📤 Ekspor JSON</b> lalu jalankan <code>bash scripts/publish-pages.sh</code>.</p>
+
+    <div class="ed-grid">
+
+      <!-- ── FORM ── -->
+      <div class="panel ed-form">
+        <h3 id="formTitle">Tambah soal baru</h3>
+        <label class="field"><span>Mata pelajaran</span>
+          <select id="fMapel"></select>
+        </label>
+        <label class="field"><span>Tingkat kesulitan</span>
+          <select id="fTingkat">
+            <option value="mudah">Mudah</option>
+            <option value="sedang">Sedang</option>
+            <option value="sulit">Sulit</option>
+          </select>
+        </label>
+        <label class="field"><span>Teks soal (bisa berupa pernyataan yang dinilai benar/salah)</span>
+          <textarea id="fSoal" class="field-input" rows="3" placeholder="mis. Air mendidih pada suhu 100 °C"></textarea>
+        </label>
+        <div class="field"><span>Jawaban yang benar</span>
+          <div class="ans-toggle">
+            <button class="ans-btn on-true" id="ansTrue" type="button">✓ BENAR</button>
+            <button class="ans-btn" id="ansFalse" type="button">✗ SALAH</button>
+          </div>
+        </div>
+        <label class="field"><span>Penjelasan (opsional, tampil setelah menjawab)</span>
+          <textarea id="fPenjelasan" class="field-input" rows="2" placeholder="mis. Pada tekanan normal air mendidih pada 100 °C."></textarea>
+        </label>
+        <div class="row">
+          <button class="primary-btn" id="btnSimpan">💾 Simpan soal</button>
+          <button class="ghost-btn" id="btnBatal" hidden>Batal</button>
+        </div>
+        <p class="ed-status" id="edStatus"></p>
+      </div>
+
+      <!-- ── DAFTAR ── -->
+      <div class="panel">
+        <h2 style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+          <span id="listTitle">Soal</span>
+          <span class="badge" id="listCount">0</span>
+        </h2>
+        <div class="ed-list" id="edList"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="modal" id="modalFs" hidden>
+  <div class="modal-card">
+    <h3>Unggah semua soal ke Firestore</h3>
+    <p class="hint">Semua soal pada mapel/tingkat yang ada di editor akan ditulis ke koleksi soal
+      (soal dengan teks sama akan ditimpa, bukan digandakan). Isi konfigurasi sama seperti menu ⚙ di game.</p>
+    <label class="field"><span>Project ID</span>
+      <input type="text" id="fsProject" class="field-input" placeholder="mis. sd-negeri-3-abc"></label>
+    <label class="field"><span>API Key (opsional bila aturan dibuka)</span>
+      <input type="text" id="fsKey" class="field-input" placeholder="AIza…"></label>
+    <p class="hint" id="fsStatus"></p>
+    <div class="row">
+      <button class="primary-btn" id="btnFsUpload">🔥 Unggah sekarang</button>
+      <button class="ghost-btn" id="btnFsClose">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+<input type="file" id="fileImpor" accept=".json,application/json" class="hidden-file">
+
+<script src="firestore.js?v=20260923034710"></script>
+<script src="editor.js?v=20260923034710"></script>
+</body>
+</html>

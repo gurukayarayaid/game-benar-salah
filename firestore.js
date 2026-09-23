@@ -6,6 +6,8 @@
  *      guru tanpa menyentuh kode.
  *   2. Bank soal bawaan (questions.json) → selalu tersedia, jadi game tetap
  *      jalan walau internet mati atau Firestore belum diatur.
+ * Di atas keduanya ada bank editor (localStorage, dibuat lewat editor.html):
+ * mapel/tingkat yang disunting guru di editor selalu menimpa hasilnya.
  *
  * Konfigurasi dibaca dari (urutan prioritas):
  *   - localStorage "game.firebase" (diisi dari menu ⚙ di halaman game)
@@ -15,6 +17,48 @@
  *   { mapel: "mtk", tingkat: "mudah", soal: "…", jawaban: true, penjelasan: "…" }
  * Nama field Inggris (subject/level/text/answer/explanation) juga diterima.
  */
+/*
+ * Penyimpanan soal milik editor (editor.html).
+ *
+ * Soal buatan guru disimpan di localStorage per perangkat (kunci
+ * "game.editor-bank"), DI ATAS bank bawaan: mapel/tingkat yang ada di sini
+ * menggantikan daftar dari bank bawaan, sehingga murid langsung melihat
+ * soal tambahan tanpa menyunting berkas atau menyentuh Firestore.
+ * Format di localStorage = persis format questions.json, jadi tombol
+ * "Ekspor" hasilnya bisa langsung menggantikan questions.json.
+ */
+  const EDITOR_KEY = 'game.editor-bank';
+  let editorBank = null;            // null = tidak ada; { mapel: { tingkat: [ {t,a,e} ] } }
+
+  function muatEditorBank() {
+    try {
+      const raw = localStorage.getItem(EDITOR_KEY);
+      editorBank = raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      editorBank = null;
+    }
+    if (editorBank && typeof editorBank !== 'object') editorBank = null;
+    return editorBank;
+  }
+
+  function simpanEditorBank(bank) {
+    editorBank = bank && Object.keys(bank).length ? bank : null;
+    try {
+      if (editorBank) localStorage.setItem(EDITOR_KEY, JSON.stringify(editorBank));
+      else localStorage.removeItem(EDITOR_KEY);
+    } catch (e) { /* penyimpanan penuh / mode privat — biarkan di memori saja */ }
+    return editorBank;
+  }
+
+  /* Jumlah soal editor per mapel/tingkat (untuk laporan editor). */
+  function editorBankCount() {
+    const b = editorBank || muatEditorBank();
+    if (!b) return 0;
+    let n = 0;
+    for (const m in b) for (const t in b[m]) n += (b[m][t] || []).length;
+    return n;
+  }
+
 (function () {
   const CFG_KEY = 'game.firebase';
   const CACHE_KEY = 'game.firebase.cache';
@@ -135,6 +179,31 @@
     DB.subjects = DB.subjects.concat(extra);
   }
 
+  /* Terapkan bank editor di atas DB.docs yang ada sekarang + perbarui daftar
+     mapel. Dipakai saat init DAN setelah guru menyimpan di editor (supaya
+     questions() selalu benar tanpa menunggu init ulang yang asinkron). */
+  function terapkanEditor() {
+    if (!DB.docs) return false;
+    const b = editorBank || muatEditorBank();
+    if (!b) return false;
+    let ada = false;
+    for (const mapel in b) {
+      for (const lvl in b[mapel]) {
+        const arr = (b[mapel][lvl] || []).filter(q => q && q.t && typeof q.a === 'boolean');
+        if (!arr.length) continue;
+        ada = true;
+        DB.docs.set(mapel + '/' + lvl, arr.map(q => ({
+          soal: q.t, jawaban: !!q.a, penjelasan: q.e || ''
+        })));
+      }
+    }
+    if (ada) {
+      augmentSubjects();
+      DB.reason = `Memakai soal hasil suntingan editor (${editorBankCount()} soal, tersimpan di perangkat ini).`;
+    }
+    return ada;
+  }
+
   /* ---------------- Firestore ---------------- */
   async function fetchCollection(cfg) {
     const key = `${cfg.projectId}|${cfg.collection}`;
@@ -204,6 +273,31 @@
     get reason() { return DB.reason; },
     get isFirestore() { return DB.source === 'firestore'; },
 
+    /* ---- Bank editor (dipakai editor.html) ---- */
+    get editorBank() { return editorBank || muatEditorBank(); },
+
+    /* Simpan bank editor (format = format questions.json) lalu muat ulang soal.
+       Soal diterapkan SINKRON ke dokumen di memori supaya questions() langsung
+       benar; init ulang berjalan di latar belakang untuk menyegarkan sisanya. */
+    setEditorBank(bank) {
+      simpanEditorBank(bank);
+      terapkanEditor();
+      DB.loadPromise = null;
+      return QuestionSource.init();
+    },
+
+    /* Gabungkan soal-soal editor ke bank yang ada (dipakai "Simpan" di editor). */
+    updateEditorQuestions(mapel, tingkat, list) {
+      const b = Object.assign({}, editorBank || muatEditorBank() || {});
+      if (!b[mapel]) b[mapel] = {};
+      if (list && list.length) b[mapel][tingkat] = list;
+      else delete b[mapel][tingkat];
+      if (!Object.keys(b[mapel]).length) delete b[mapel];
+      return simpanEditorBank(b);
+    },
+
+    editorCount() { return editorBankCount(); },
+
     async init() {
       if (DB.loadPromise) return DB.loadPromise;
       DB.loadPromise = (async () => {
@@ -214,31 +308,35 @@
         if (!DB.config) {
           DB.reason = 'Firestore belum dikonfigurasi — memakai bank soal bawaan.';
           DB.docs = local;
-          return QuestionSource;
         }
-        try {
-          let docs = await fetchCollection(DB.config);
-          if (!docs.length) throw new Error('Koleksi soal di Firestore masih kosong');
-          DB.docs = indexDocs(docs);
-          DB.source = 'firestore';
-          // Mapel yang belum ada di Firestore tetap dilayani bank bawaan.
-          for (const [k, v] of local) if (!DB.docs.has(k)) DB.docs.set(k, v);
-          augmentSubjects();
-          DB.reason = '';
-        } catch (err) {
-          const cached = readCachedDocs(DB.config);
-          if (cached) {
-            DB.docs = indexDocs(cached);
+        else {
+          try {
+            let docs = await fetchCollection(DB.config);
+            if (!docs.length) throw new Error('Koleksi soal di Firestore masih kosong');
+            DB.docs = indexDocs(docs);
             DB.source = 'firestore';
-            DB.reason = 'Menampilkan salinan soal terakhir (Firestore tidak terjangkau).';
+            // Mapel yang belum ada di Firestore tetap dilayani bank bawaan.
             for (const [k, v] of local) if (!DB.docs.has(k)) DB.docs.set(k, v);
             augmentSubjects();
-          } else {
-            DB.docs = local;
-            DB.source = 'lokal';
-            DB.reason = String(err.message || err);
+            DB.reason = '';
+          } catch (err) {
+            const cached = readCachedDocs(DB.config);
+            if (cached) {
+              DB.docs = indexDocs(cached);
+              DB.source = 'firestore';
+              DB.reason = 'Menampilkan salinan soal terakhir (Firestore tidak terjangkau).';
+              for (const [k, v] of local) if (!DB.docs.has(k)) DB.docs.set(k, v);
+              augmentSubjects();
+            } else {
+              DB.docs = local;
+              DB.source = 'lokal';
+              DB.reason = String(err.message || err);
+            }
           }
         }
+        /* Bank editor (dibuat di editor.html) menimpa hasil di atas: soal
+           hasil suntingan guru di perangkat ini selalu yang dipakai game. */
+        terapkanEditor();
         return QuestionSource;
       })();
       return DB.loadPromise;
@@ -269,6 +367,38 @@
       DB.source = clean ? 'firestore' : 'lokal';
       DB.reason = '';
       return clean;
+    },
+
+    /* ---- Unggah dokumen soal apa pun ke Firestore (dipakai editor.html) ---- */
+    async uploadDocsToFirestore(cfg, docs, onProgress) {
+      const c = normalizeConfig(cfg);
+      if (!c) throw new Error('Project ID wajib diisi');
+      if (!docs || !docs.length) return 0;
+      const CHUNK = 200;
+      let sent = 0;
+      for (let i = 0; i < docs.length; i += CHUNK) {
+        const slice = docs.slice(i, i + CHUNK);
+        const writes = slice.map(q => ({
+          update: {
+            name: `projects/${c.projectId}/databases/(default)/documents/${c.collection}/${idOf(q)}`,
+            fields: toFields(q)
+          }
+        }));
+        const url = `${baseUrl(c)}:commit` + (c.apiKey ? `?key=${encodeURIComponent(c.apiKey)}` : '');
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ writes })
+        });
+        if (!res.ok) {
+          const body = await res.text();
+          throw new Error(`Gagal mengunggah (${res.status}): ${body.slice(0, 220)}`);
+        }
+        sent += slice.length;
+        if (onProgress) onProgress(sent, docs.length);
+      }
+      localStorage.removeItem(CACHE_KEY);
+      return sent;
     },
 
     /* ---- Unggah bank bawaan ke Firestore (dipakai halaman seed) ---- */
