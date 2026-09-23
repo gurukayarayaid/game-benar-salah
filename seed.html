@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unggah Soal ke Firestore — Game Benar / Salah</title>
+<link rel="stylesheet" href="game.css">
+</head>
+<body>
+<section class="screen">
+  <div class="menu-wrap" style="max-width:820px">
+    <header class="menu-head">
+      <div class="brand">
+        <span class="brand-icon">☁️</span>
+        <div>
+          <h1>Unggah Soal ke Firestore</h1>
+          <p class="sub">Menyalin bank soal bawaan (210 soal, 7 mapel × 3 tingkat) ke database</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="panel">
+      <label class="field"><span>Project ID</span>
+        <input type="text" id="projectId" placeholder="mis. sd-negeri-3-abc"></label>
+      <label class="field"><span>API Key (Web API Key dari Firebase)</span>
+        <input type="text" id="apiKey" placeholder="AIza…"></label>
+      <label class="field"><span>Nama koleksi soal</span>
+        <input type="text" id="collection" value="questions"></label>
+
+      <label class="switch-row" for="chkUse">
+        <span>Pakai Firestore ini untuk halaman game di perangkat ini</span>
+        <input type="checkbox" id="chkUse" checked>
+        <i class="switch"></i>
+      </label>
+
+      <button class="primary-btn" id="btnSeed">⬆ Unggah bank soal bawaan</button>
+      <p class="hint" id="status">Siap.</p>
+
+      <details class="adv">
+        <summary>Cara menyiapkan Firestore</summary>
+        <p class="hint">
+          1. Buka <a href="https://console.firebase.google.com" target="_blank" rel="noopener">console.firebase.google.com</a>,
+          buat proyek lalu tambahkan aplikasi <b>Web</b>.<br>
+          2. Menu <b>Build → Firestore Database → Create database</b>.<br>
+          3. Menu <b>Project settings → General → Your apps</b>: salin <i>Project ID</i> dan <i>Web API Key</i>.<br>
+          4. Aturan sementara agar halaman ini bisa mengunggah (ganti setelah selesai):
+          <code>allow read, write: if true;</code><br>
+          5. Klik <b>Unggah bank soal bawaan</b>. Setiap soal menjadi satu dokumen:
+          <code>{ mapel, tingkat, soal, jawaban, penjelasan }</code>.<br>
+          6. Setelah selesai, isi kolom Firestore di menu ⚙ halaman game (bisa sekali saja — nilai disimpan
+          di perangkat), atau simpan konfigurasi ke berkas <code>www/game/firebase-config.json</code>
+          agar semua perangkat langsung memakainya.
+        </p>
+        <p class="hint">Bila muncul pesan <b>403 PERMISSION_DENIED</b>, aturan Firestore masih menolak tulis
+          untuk pengunjung anonim — ubah aturannya seperti langkah 4.</p>
+        <p class="hint"><a href="index.html">← Kembali ke permainan</a></p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="firestore.js"></script>
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const saved = (function () {
+    try { return JSON.parse(localStorage.getItem('game.firebase') || 'null') || {}; } catch (e) { return {}; }
+  })();
+  $('projectId').value = saved.projectId || '';
+  $('apiKey').value = saved.apiKey || '';
+  $('collection').value = saved.collection || 'questions';
+
+  function toast(msg, ms = 3000) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.hidden = false;
+    setTimeout(() => { t.hidden = true; }, ms);
+  }
+
+  $('btnSeed').addEventListener('click', async () => {
+    const cfg = {
+      projectId: $('projectId').value.trim(),
+      apiKey: $('apiKey').value.trim(),
+      collection: $('collection').value.trim() || 'questions',
+      resultsCollection: (saved.resultsCollection || 'hasil')
+    };
+    const st = $('status');
+    const btn = $('btnSeed');
+    if (!cfg.projectId) { st.textContent = 'Project ID wajib diisi.'; return; }
+    btn.disabled = true;
+    try {
+      const total = await QuestionSource.seedToFirestore(cfg, (sent, all) => {
+        st.textContent = `Mengunggah ${sent} dari ${all} soal…`;
+      });
+      if ($('chkUse').checked) QuestionSource.saveConfig(cfg);
+      st.textContent = `Selesai — ${total} soal tersimpan di koleksi "${cfg.collection}"` +
+        ($('chkUse').checked ? ' dan dipakai halaman game di perangkat ini.' : '.');
+      toast(`${total} soal berhasil diunggah`);
+    } catch (e) {
+      st.textContent = String(e.message || e);
+      toast('Gagal mengunggah — lihat pesan di bawah tombol', 4000);
+    } finally {
+      btn.disabled = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>

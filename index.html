@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Game Benar / Salah — Kelas 3 SD</title>
+<link rel="icon" href="icon.svg">
+<link rel="stylesheet" href="game.css">
+</head>
+<body>
+
+<!-- ══════════════ LAYAR 1 — MENU ══════════════ -->
+<section id="screenMenu" class="screen">
+  <div class="menu-wrap">
+    <header class="menu-head">
+      <div class="brand">
+        <span class="brand-icon">🎯</span>
+        <div>
+          <h1>Game Benar / Salah</h1>
+          <p class="sub">Kelas 3 Sekolah Dasar</p>
+        </div>
+      </div>
+      <div class="head-actions">
+        <span class="badge" id="sourceBadge" title="Sumber soal">Bank bawaan</span>
+        <button class="icon-btn" id="btnCfg" title="Pengaturan Firestore">⚙</button>
+        <button class="icon-btn" id="btnFull" title="Layar penuh">⛶</button>
+      </div>
+    </header>
+
+    <main class="menu-grid">
+      <div class="panel">
+        <h2>Pengaturan Permainan</h2>
+
+        <label class="field">
+          <span>Mata pelajaran</span>
+          <select id="selSubject"></select>
+        </label>
+
+        <label class="field">
+          <span>Jumlah soal</span>
+          <select id="selCount">
+            <option value="5">5 soal</option>
+            <option value="10" selected>10 soal</option>
+            <option value="15">15 soal</option>
+            <option value="20">20 soal</option>
+            <option value="25">25 soal</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Tingkat kesulitan</span>
+          <select id="selLevel">
+            <option value="mudah" selected>Mudah</option>
+            <option value="sedang">Sedang</option>
+            <option value="sulit">Sulit</option>
+          </select>
+        </label>
+
+        <div class="field">
+          <span>Cara menjawab</span>
+          <select id="selInput">
+            <option value="kamera" selected>Kamera — berdiri kiri / kanan</option>
+            <option value="keduanya">Kamera + sentuh layar</option>
+            <option value="sentuh">Sentuh layar / tombol saja</option>
+          </select>
+        </div>
+
+        <label class="switch-row" for="chkTimer">
+          <span>Aktifkan timer</span>
+          <input type="checkbox" id="chkTimer">
+          <i class="switch"></i>
+        </label>
+
+        <label class="field" id="wrapTimerSec" hidden>
+          <span>Waktu per soal</span>
+          <select id="selTimer">
+            <option value="10">10 detik</option>
+            <option value="15">15 detik</option>
+            <option value="20" selected>20 detik</option>
+            <option value="30">30 detik</option>
+            <option value="45">45 detik</option>
+          </select>
+        </label>
+
+        <details class="adv">
+          <summary>Pengaturan kamera</summary>
+          <label class="field">
+            <span>Kepekaan deteksi: <b id="sensLabel">3</b></span>
+            <input type="range" id="rngSens" min="1" max="5" step="1" value="3">
+          </label>
+          <label class="field">
+            <span>Lama berdiri untuk menjawab</span>
+            <select id="selDwell">
+              <option value="500">Cepat (0,5 detik)</option>
+              <option value="800" selected>Normal (0,8 detik)</option>
+              <option value="1200">Tenang (1,2 detik)</option>
+              <option value="1600">Sangat tenang (1,6 detik)</option>
+            </select>
+          </label>
+        </details>
+
+        <button class="primary-btn" id="btnStart">▶ Mulai Bermain</button>
+        <p class="hint" id="poolInfo"></p>
+      </div>
+
+      <div class="panel side">
+        <h2>Persiapan Kamera</h2>
+        <div class="preview-box">
+          <video id="camPreview" playsinline muted autoplay></video>
+          <div class="preview-msg" id="previewMsg">Kamera belum dinyalakan</div>
+        </div>
+        <div class="row">
+          <button class="ghost-btn" id="btnCamOn">Nyalakan kamera</button>
+          <button class="ghost-btn" id="btnCamSwitch">Ganti kamera</button>
+        </div>
+        <div class="rules">
+          <div class="rule left"><b>KIRI layar</b><span>jawaban BENAR ✓</span></div>
+          <div class="rule right"><b>KANAN layar</b><span>jawaban SALAH ✗</span></div>
+        </div>
+        <p class="hint" id="secureHint" hidden></p>
+        <p class="hint">Arahkan kamera ke ruang kosong saat mulai — aplikasi memakai ruangan kosong
+          sebagai latar. Bila kelas kosong saat mulai, deteksi akan lebih tepat.</p>
+      </div>
+    </main>
+  </div>
+</section>
+
+<!-- ══════════════ LAYAR 2 — BERMAIN ══════════════ -->
+<section id="screenPlay" class="screen" hidden>
+  <div class="play-top">
+    <div class="chips">
+      <span class="chip" id="chipSubject">—</span>
+      <span class="chip" id="chipProgress">Soal 1/10</span>
+      <span class="chip ok" id="chipScore">Skor 0</span>
+      <span class="chip" id="chipStreak" hidden>🔥 0</span>
+    </div>
+    <div class="play-actions">
+      <span class="timer-chip" id="timerChip" hidden><i id="timerBar"></i><b id="timerText">20</b></span>
+      <button class="icon-btn" id="btnSound" title="Suara">🔊</button>
+      <button class="icon-btn" id="btnCalib" title="Kalibrasi ulang kamera">🎥</button>
+      <button class="icon-btn" id="btnSwitch" title="Ganti kamera">🔄</button>
+      <button class="icon-btn" id="btnFull2" title="Layar penuh">⛶</button>
+      <button class="icon-btn danger" id="btnQuit" title="Keluar">✕</button>
+    </div>
+  </div>
+
+  <div class="question-box">
+    <p class="q-label">Benar atau salah?</p>
+    <p class="q-text" id="questionText">…</p>
+  </div>
+
+  <div class="stage" id="stage">
+    <video id="cam" playsinline muted autoplay></video>
+
+    <button class="zone zone-left" id="zoneLeft">
+      <span class="zone-word">BENAR</span>
+      <span class="zone-icon">✓</span>
+      <span class="zone-track"><i id="barLeft"></i></span>
+    </button>
+
+    <button class="zone zone-right" id="zoneRight">
+      <span class="zone-word">SALAH</span>
+      <span class="zone-icon">✗</span>
+      <span class="zone-track"><i id="barRight"></i></span>
+    </button>
+
+    <div class="stage-note" id="stageNote"></div>
+
+    <div class="feedback" id="feedback" hidden>
+      <div class="fb-head" id="fbHead"></div>
+      <p class="fb-result" id="fbResult"></p>
+      <p class="fb-explain" id="fbExplain"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ LAYAR 3 — HASIL ══════════════ -->
+<section id="screenResult" class="screen" hidden>
+  <div class="result-wrap">
+    <div class="score-circle" id="scoreCircle">
+      <b id="scoreValue">0</b>
+      <span>nilai</span>
+    </div>
+    <h2 id="resultTitle">Hebat!</h2>
+    <p class="result-sub" id="resultSub"></p>
+    <div class="stars" id="stars"></div>
+
+    <div class="review" id="review"></div>
+
+    <div class="save-box" id="saveBox" hidden>
+      <input type="text" id="inpName" placeholder="Nama murid (untuk catatan guru)">
+      <button class="ghost-btn" id="btnSaveScore">Simpan nilai</button>
+    </div>
+
+    <div class="result-actions">
+      <button class="primary-btn" id="btnAgain">🔁 Main lagi (soal baru)</button>
+      <button class="ghost-btn big" id="btnBackMenu">Menu utama</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ DIALOG PENGATURAN FIRESTORE ══════════════ -->
+<div class="modal" id="modal" hidden>
+  <div class="modal-card">
+    <h3>Database soal (Firestore)</h3>
+    <p class="hint">Kosongkan Project ID untuk kembali memakai bank soal bawaan (mode offline).
+      Konfigurasi ini disimpan di perangkat saja.</p>
+    <label class="field"><span>Project ID</span>
+      <input type="text" id="cfgProject" placeholder="mis. sd-negeri-3-abc"></label>
+    <label class="field"><span>API Key (opsional bila aturan dibuka)</span>
+      <input type="text" id="cfgKey" placeholder="AIza…"></label>
+    <label class="field"><span>Nama koleksi soal</span>
+      <input type="text" id="cfgCol" placeholder="questions"></label>
+    <label class="field"><span>Nama koleksi nilai</span>
+      <input type="text" id="cfgRes" placeholder="hasil"></label>
+    <p class="hint" id="cfgStatus"></p>
+    <div class="row">
+      <button class="primary-btn" id="btnCfgSave">Simpan &amp; muat ulang soal</button>
+      <button class="ghost-btn" id="btnCfgClose">Tutup</button>
+    </div>
+    <p class="hint">Ingin menaruh bank soal bawaan ke Firestore? Buka
+      <a href="seed.html" target="_blank" rel="noopener">halaman unggah soal</a>.</p>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="vision.js"></script>
+<script src="firestore.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

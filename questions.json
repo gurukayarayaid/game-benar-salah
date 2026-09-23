@@ -1,0 +1,306 @@
+{
+  "version": 1,
+  "subjects": [
+    {
+      "id": "pp",
+      "name": "Pendidikan Pancasila",
+      "icon": "🇮🇩",
+      "levels": {
+        "mudah": [
+          { "t": "Lambang negara Indonesia adalah Garuda Pancasila.", "a": true, "e": "Garuda Pancasila adalah lambang negara Indonesia." },
+          { "t": "Pancasila terdiri dari 5 sila.", "a": true, "e": "Pancasila berarti lima dasar atau lima sila." },
+          { "t": "Bunyi sila pertama Pancasila adalah 'Ketuhanan yang Maha Esa'.", "a": true, "e": "Sila pertama berbunyi Ketuhanan yang Maha Esa." },
+          { "t": "Bendera Indonesia berwarna merah dan putih.", "a": true, "e": "Bendera Indonesia berwarna merah di atas dan putih di bawah." },
+          { "t": "Lagu kebangsaan Indonesia adalah Indonesia Raya.", "a": true, "e": "Indonesia Raya diciptakan oleh W.R. Supratman." },
+          { "t": "Simbol sila kedua Pancasila adalah bintang.", "a": false, "e": "Simbol sila kedua adalah rantai emas. Bintang adalah simbol sila pertama." },
+          { "t": "Bunyi sila ketiga Pancasila adalah 'Persatuan Indonesia'.", "a": true, "e": "Sila ketiga berbunyi Persatuan Indonesia dengan simbol pohon beringin." },
+          { "t": "Simbol sila kelima Pancasila adalah kepala banteng.", "a": false, "e": "Sila kelima berlambang padi dan kapas. Kepala banteng adalah sila keempat." },
+          { "t": "Musyawarah untuk mengambil keputusan sesuai sila keempat Pancasila.", "a": true, "e": "Sila keempat mengutamakan musyawarah." },
+          { "t": "Menghormati teman yang berbeda agama termasuk pengamalan sila pertama.", "a": true, "e": "Sila pertama mengajarkan kita menghormati kepercayaan orang lain." }
+        ],
+        "sedang": [
+          { "t": "Simbol sila keempat Pancasila adalah kepala banteng.", "a": true, "e": "Kepala banteng melambangkan musyawarah." },
+          { "t": "Sila kedua Pancasila mengajarkan kita bersikap adil kepada sesama manusia.", "a": true, "e": "Bunyi sila kedua: Kemanusiaan yang adil dan beradab." },
+          { "t": "Rantai emas pada Garuda Pancasila melambangkan manusia yang saling membutuhkan.", "a": true, "e": "Mata rantai bulat melambangkan perempuan, mata rantai segi empat melambangkan laki-laki." },
+          { "t": "Pohon beringin melambangkan tempat berteduh dan persatuan Indonesia.", "a": true, "e": "Pohon beringin berakar kuat, menggambarkan persatuan." },
+          { "t": "Padi dan kapas melambangkan kecukupan sandang dan pangan.", "a": true, "e": "Padi adalah pangan dan kapas adalah bahan pakaian." },
+          { "t": "Jumlah bulu pada sayap Garuda Pancasila adalah 17.", "a": true, "e": "17 melambangkan tanggal kemerdekaan Indonesia." },
+          { "t": "Jumlah bulu pada ekor Garuda Pancasila adalah 8.", "a": true, "e": "8 melambangkan bulan Agustus." },
+          { "t": "Jumlah bulu pada leher Garuda Pancasila adalah 45.", "a": true, "e": "45 melambangkan tahun 1945." },
+          { "t": "Membuang sampah ke sungai sesuai dengan nilai-nilai Pancasila.", "a": false, "e": "Membuang sampah ke sungai merusak lingkungan, tidak sesuai sila kedua dan kelima." },
+          { "t": "Menolong teman yang jatuh tanpa membeda-bedakan asalnya sesuai sila kedua.", "a": true, "e": "Menolong sesama manusia adalah pengamalan sila kedua." }
+        ],
+        "sulit": [
+          { "t": "Sila keempat mengutamakan musyawarah, jadi setiap keputusan harus diambil dengan cara pemungutan suara.", "a": false, "e": "Musyawarah diutamakan; pemungutan suara hanya cara terakhir." },
+          { "t": "Semboyan Bhinneka Tunggal Ika berarti berbeda-beda tetapi tetap satu.", "a": true, "e": "Bhinneka Tunggal Ika menjadi semboyan persatuan Indonesia." },
+          { "t": "Kebebasan beragama berarti kita boleh memaksa orang lain ikut agama kita.", "a": false, "e": "Setiap orang bebas memeluk agamanya sendiri." },
+          { "t": "Mengutamakan kepentingan bersama daripada kepentingan pribadi adalah pengamalan sila ketiga.", "a": true, "e": "Sila ketiga menekankan persatuan dan kepentingan bersama." },
+          { "t": "Keputusan hasil musyawarah yang tidak sesuai pendapat kita boleh tidak dilaksanakan.", "a": false, "e": "Keputusan musyawarah harus dilaksanakan dengan tanggung jawab." },
+          { "t": "Semboyan Bhinneka Tunggal Ika diambil dari kitab Sutasoma karya Mpu Tantular.", "a": true, "e": "Kitab Sutasoma ditulis oleh Mpu Tantular pada zaman Majapahit." },
+          { "t": "Pancasila ditetapkan sebagai dasar negara pada 18 Agustus 1945 bersama UUD 1945.", "a": true, "e": "Sidang PPKI 18 Agustus 1945 menetapkan UUD 1945 dan dasar negara Pancasila." },
+          { "t": "Menghargai pendapat orang lain saat musyawarah adalah pengamalan sila keempat.", "a": true, "e": "Sila keempat mengajarkan musyawarah yang menghargai pendapat." },
+          { "t": "Perbedaan suku bangsa di Indonesia harus dihapus agar bangsa menjadi kuat.", "a": false, "e": "Perbedaan suku justru dihargai dan dipersatukan." },
+          { "t": "Gotong royong membersihkan kelas adalah pengamalan nilai persatuan dan kerakyatan.", "a": true, "e": "Gotong royong mengamalkan sila ketiga dan keempat." }
+        ]
+      }
+    },
+    {
+      "id": "bi",
+      "name": "Bahasa Indonesia",
+      "icon": "📖",
+      "levels": {
+        "mudah": [
+          { "t": "Kata 'buku' terdiri dari dua suku kata.", "a": true, "e": "Buku diucapkan bu-ku, jadi ada dua suku kata." },
+          { "t": "Huruf pertama nama orang ditulis dengan huruf kapital.", "a": true, "e": "Contoh: Andi, Siti, Budi." },
+          { "t": "Kalimat tanya diakhiri dengan tanda seru.", "a": false, "e": "Kalimat tanya diakhiri tanda tanya (?)." },
+          { "t": "Antonim dari kata 'besar' adalah 'kecil'.", "a": true, "e": "Antonim artinya lawan kata." },
+          { "t": "Sinonim dari kata 'pintar' adalah 'pandai'.", "a": true, "e": "Sinonim artinya persamaan kata." },
+          { "t": "Kata 'makan' termasuk kata kerja.", "a": true, "e": "Kata kerja menunjukkan perbuatan." },
+          { "t": "Kalimat perintah biasanya diakhiri dengan tanda seru (!).", "a": true, "e": "Contoh: Tutup pintu itu!" },
+          { "t": "'Kucing' dan 'kelinci' adalah nama binatang.", "a": true, "e": "Keduanya termasuk nama hewan." },
+          { "t": "'Ibu pergi ke pasar.' adalah kalimat berita.", "a": true, "e": "Kalimat berita memberi informasi dan diakhiri titik." },
+          { "t": "Kata 'sekolah' diawali dengan huruf 'a'.", "a": false, "e": "Kata sekolah diawali huruf 's'." }
+        ],
+        "sedang": [
+          { "t": "Kata dasar dari 'berlari' adalah 'lari'.", "a": true, "e": "Awalan ber- ditambahkan pada kata dasar lari." },
+          { "t": "Kata 'membaca' terbentuk dari awalan 'me-' dan kata dasar 'baca'.", "a": true, "e": "me- + baca menjadi membaca." },
+          { "t": "Pantun adalah puisi lama yang terdiri dari empat baris.", "a": true, "e": "Pantun berima a-b-a-b dengan sampiran dan isi." },
+          { "t": "Kata hubung pada kalimat 'Ani rajin belajar, tetapi ia lupa membawa buku.' adalah 'tetapi'.", "a": true, "e": "Kata tetapi menghubungkan dua klausa yang berlawanan." },
+          { "t": "Kata 'cantik' termasuk kata sifat.", "a": true, "e": "Kata sifat menggambarkan keadaan benda atau orang." },
+          { "t": "Kata ulang 'anak-anak' menunjukkan jumlah banyak.", "a": true, "e": "Kata ulang dapat menyatakan banyak." },
+          { "t": "Tanda koma dipakai untuk memisahkan rincian dalam kalimat.", "a": true, "e": "Contoh: Aku membeli buku, pensil, dan penghapus." },
+          { "t": "Cerita yang tokohnya binatang dan berisi pesan moral disebut fabel.", "a": true, "e": "Fabel selalu memberi pelajaran atau amanat." },
+          { "t": "Kalimat majemuk adalah kalimat yang hanya memiliki satu subjek.", "a": false, "e": "Kalimat majemuk memiliki lebih dari satu klausa." },
+          { "t": "Kata 'dengan' termasuk kata depan.", "a": true, "e": "Kata dengan, di, ke, dari termasuk kata depan." }
+        ],
+        "sulit": [
+          { "t": "Kalimat efektif harus jelas, singkat, dan tidak boros kata.", "a": true, "e": "Kalimat efektif mudah dipahami dan tidak berlebihan." },
+          { "t": "Penulisan bilangan tingkat yang benar adalah 'abad ke-20'.", "a": true, "e": "Bilangan tingkat ditulis dengan ke- dan tanda hubung." },
+          { "t": "Sinonim kata 'khawatir' adalah 'cemas'.", "a": true, "e": "Khwatir dan cemas memiliki makna yang sama." },
+          { "t": "Antonim kata 'asli' adalah 'tiruan'.", "a": true, "e": "Asli adalah lawan dari tiruan atau palsu." },
+          { "t": "Kalimat langsung ditulis tanpa tanda petik.", "a": false, "e": "Kalimat langsung diapit tanda petik, misalnya \"Ayo belajar!\"." },
+          { "t": "Kata 'karena' dan 'sehingga' termasuk kata hubung.", "a": true, "e": "Keduanya menghubungkan sebab dan akibat." },
+          { "t": "Ide pokok sebuah paragraf terdapat pada kalimat utama.", "a": true, "e": "Kalimat utama memuat gagasan pokok paragraf." },
+          { "t": "Laporan hasil pengamatan harus ditulis sesuai kenyataan.", "a": true, "e": "Laporan pengamatan berisi fakta, bukan khayalan." },
+          { "t": "Kata 'para' dan 'sekalian' dipakai bersama sehingga kalimat 'Para siswa sekalian berbaris.' menjadi kalimat efektif.", "a": false, "e": "Para dan sekalian bermakna sama, jadi salah satu saja agar efektif." },
+          { "t": "Majalah dinding termasuk media untuk memajang karya siswa.", "a": true, "e": "Majalah dinding atau mading menampilkan karya tulis siswa." }
+        ]
+      }
+    },
+    {
+      "id": "mtk",
+      "name": "Matematika",
+      "icon": "🔢",
+      "levels": {
+        "mudah": [
+          { "t": "Hasil dari 7 + 8 adalah 15.", "a": true, "e": "7 + 8 = 15." },
+          { "t": "2 × 5 = 10.", "a": true, "e": "Dua kali lima sama dengan sepuluh." },
+          { "t": "10 : 2 = 5.", "a": true, "e": "Sepuluh dibagi dua hasilnya lima." },
+          { "t": "Segitiga memiliki 4 sisi.", "a": false, "e": "Segitiga memiliki 3 sisi." },
+          { "t": "Uang Rp1.000 nilainya lebih besar daripada Rp500.", "a": true, "e": "Seribu lebih besar dari lima ratus." },
+          { "t": "Bilangan 25 dibaca dua puluh lima.", "a": true, "e": "25 = dua puluh lima." },
+          { "t": "1 jam sama dengan 100 menit.", "a": false, "e": "1 jam sama dengan 60 menit." },
+          { "t": "Setengah dari 20 adalah 10.", "a": true, "e": "20 dibagi 2 sama dengan 10." },
+          { "t": "Persegi memiliki 4 sisi yang sama panjang.", "a": true, "e": "Semua sisi persegi sama panjang." },
+          { "t": "12 + 12 = 24.", "a": true, "e": "Dua belas ditambah dua belas sama dengan dua puluh empat." }
+        ],
+        "sedang": [
+          { "t": "Hasil dari 6 × 7 adalah 42.", "a": true, "e": "6 × 7 = 42." },
+          { "t": "Angka 1 pada bilangan 128 menempati tempat ratusan.", "a": true, "e": "128 = 1 ratusan + 2 puluhan + 8 satuan." },
+          { "t": "48 : 6 = 8.", "a": true, "e": "Karena 6 × 8 = 48." },
+          { "t": "Pecahan 1/2 lebih besar daripada 1/4.", "a": true, "e": "Setengah lebih besar dari seperempat." },
+          { "t": "1 meter sama dengan 100 sentimeter.", "a": true, "e": "1 m = 100 cm." },
+          { "t": "Keliling persegi dengan sisi 5 cm adalah 25 cm.", "a": false, "e": "Keliling persegi = 4 × sisi = 4 × 5 = 20 cm." },
+          { "t": "Bilangan 350 dibulatkan ke ratusan terdekat menjadi 400.", "a": true, "e": "Karena puluhannya 5, maka dibulatkan ke atas menjadi 400." },
+          { "t": "Pecahan 3/4 dibaca tiga per empat.", "a": true, "e": "Pembilang dibaca tiga, penyebut dibaca empat." },
+          { "t": "Bangun datar yang memiliki 5 sisi disebut segi lima.", "a": true, "e": "Segi lima atau pentagon memiliki 5 sisi." },
+          { "t": "Hasil dari 9 × 9 adalah 81.", "a": true, "e": "9 × 9 = 81." }
+        ],
+        "sulit": [
+          { "t": "Hasil dari 25 : 5 × 4 adalah 20.", "a": true, "e": "25 : 5 = 5, lalu 5 × 4 = 20." },
+          { "t": "Luas persegi dengan sisi 6 cm adalah 36 cm².", "a": true, "e": "Luas persegi = sisi × sisi = 6 × 6 = 36 cm²." },
+          { "t": "Di antara pecahan 3/8 dan 5/8, yang lebih kecil adalah 5/8.", "a": false, "e": "Penyebutnya sama, jadi yang lebih kecil adalah 3/8." },
+          { "t": "Hasil dari 144 : 12 adalah 12.", "a": true, "e": "12 × 12 = 144." },
+          { "t": "2 minggu sama dengan 12 hari.", "a": false, "e": "1 minggu 7 hari, jadi 2 minggu = 14 hari." },
+          { "t": "Berat 1 kilogram sama dengan 10 ons.", "a": true, "e": "1 kg = 10 ons = 1.000 gram." },
+          { "t": "Jika satu kotak berisi 8 kelereng, maka 3 kotak berisi 24 kelereng.", "a": true, "e": "3 × 8 = 24." },
+          { "t": "Semua sudut pada persegi panjang adalah sudut siku-siku.", "a": true, "e": "Persegi panjang memiliki 4 sudut 90°." },
+          { "t": "Jika kegiatan dimulai pukul 08.15 dan selesai pukul 09.00, lamanya 45 menit.", "a": true, "e": "Dari 08.15 ke 09.00 ada 45 menit." },
+          { "t": "Setengah dari 3/4 adalah 3/8.", "a": true, "e": "1/2 × 3/4 = 3/8." }
+        ]
+      }
+    },
+    {
+      "id": "ipas",
+      "name": "IPAS",
+      "icon": "🔬",
+      "levels": {
+        "mudah": [
+          { "t": "Matahari terbit di sebelah timur.", "a": true, "e": "Matahari terbit di timur dan terbenam di barat." },
+          { "t": "Tumbuhan membutuhkan air untuk hidup.", "a": true, "e": "Air membantu tumbuhan tumbuh." },
+          { "t": "Kucing berkembang biak dengan cara bertelur.", "a": false, "e": "Kucing melahirkan anaknya." },
+          { "t": "Hewan yang memakan tumbuhan disebut herbivora.", "a": true, "e": "Herbivora pemakan tumbuhan, karnivora pemakan daging." },
+          { "t": "Arah mata angin utama ada empat.", "a": true, "e": "Utara, timur, selatan, dan barat." },
+          { "t": "Air dapat berubah menjadi uap jika dipanaskan.", "a": true, "e": "Perubahan itu disebut menguap." },
+          { "t": "Es adalah air dalam bentuk padat.", "a": true, "e": "Air dapat berbentuk padat, cair, dan gas." },
+          { "t": "Bunga adalah bagian tumbuhan yang membantu perkembangbiakan.", "a": true, "e": "Bunga menjadi tempat terjadinya penyerbukan." },
+          { "t": "Sampah plastik mudah terurai di dalam tanah.", "a": false, "e": "Plastik butuh puluhan tahun untuk terurai." },
+          { "t": "Kita harus mencuci tangan sebelum makan agar terhindar dari penyakit.", "a": true, "e": "Cuci tangan membunuh kuman penyebab penyakit." }
+        ],
+        "sedang": [
+          { "t": "Proses tumbuhan membuat makanan dengan bantuan cahaya matahari disebut fotosintesis.", "a": true, "e": "Daun mengolah air dan karbon dioksida dengan cahaya matahari." },
+          { "t": "Hewan yang hidup di dua alam disebut amfibi, contohnya katak.", "a": true, "e": "Katak hidup di air dan di darat." },
+          { "t": "Rantai makanan dimulai dari tumbuhan hijau sebagai produsen.", "a": true, "e": "Tumbuhan membuat makanan sendiri." },
+          { "t": "Kompas dapat menunjukkan arah karena memiliki magnet.", "a": true, "e": "Jarum kompas selalu menunjuk utara-selatan." },
+          { "t": "Benda gas memiliki bentuk yang tetap.", "a": false, "e": "Benda gas memenuhi ruangan dan bentuknya berubah." },
+          { "t": "Perubahan wujud dari gas menjadi cair disebut mengembun.", "a": true, "e": "Contohnya titik air di luar gelas es." },
+          { "t": "Indonesia memiliki musim hujan dan musim kemarau.", "a": true, "e": "Keduanya dipengaruhi angin muson." },
+          { "t": "Gunung berapi termasuk kenampakan alam buatan.", "a": false, "e": "Gunung berapi adalah kenampakan alam." },
+          { "t": "Denah adalah gambar yang menunjukkan letak suatu tempat.", "a": true, "e": "Denah memudahkan kita menemukan tempat." },
+          { "t": "Kita dapat melihat benda karena ada cahaya.", "a": true, "e": "Tanpa cahaya, mata tidak dapat melihat." }
+        ],
+        "sulit": [
+          { "t": "Bagian tumbuhan yang menyerap air dari dalam tanah adalah akar.", "a": true, "e": "Akar menyerap air dan zat hara." },
+          { "t": "Menjaga kebersihan lingkungan membantu mencegah penyakit demam berdarah.", "a": true, "e": "Nyamuk Aedes berkembang biak di air bersih yang tergenang." },
+          { "t": "Semua hewan bernapas menggunakan paru-paru.", "a": false, "e": "Ikan bernapas dengan insang." },
+          { "t": "Sampah organik dapat diolah menjadi kompos.", "a": true, "e": "Kompos menyuburkan tanah." },
+          { "t": "Skala pada peta menunjukkan perbandingan jarak pada peta dengan jarak sebenarnya.", "a": true, "e": "Skala membantu menghitung jarak nyata." },
+          { "t": "Matahari termasuk sumber energi yang dapat habis dalam waktu singkat.", "a": false, "e": "Energi matahari dapat diperbarui." },
+          { "t": "Urbanisasi adalah perpindahan penduduk dari desa ke kota.", "a": true, "e": "Urbanisasi biasanya karena mencari pekerjaan." },
+          { "t": "Menghemat air adalah salah satu cara menjaga lingkungan.", "a": true, "e": "Air bersih perlu dijaga untuk masa depan." },
+          { "t": "Udara di daerah pegunungan biasanya lebih dingin daripada di daerah pantai.", "a": true, "e": "Semakin tinggi tempat, semakin dingin udaranya." },
+          { "t": "Suhu dan cuaca tidak berpengaruh terhadap cara berpakaian orang.", "a": false, "e": "Saat dingin orang memakai pakaian tebal." }
+        ]
+      }
+    },
+    {
+      "id": "bj",
+      "name": "Basa Jawa",
+      "icon": "🎭",
+      "levels": {
+        "mudah": [
+          { "t": "'Sugeng enjing' tegesé selamat pagi.", "a": true, "e": "Enjing tegesé esuk utawa pagi." },
+          { "t": "'Matur nuwun' tegesé terima kasih.", "a": true, "e": "Matur nuwun diucapake nalika nampa pitulungan." },
+          { "t": "'Adhi' tegesé sedulur sing luwih enom.", "a": true, "e": "Adhi yaiku sedulur sing luwih enom." },
+          { "t": "Aksara Jawa ditulis saka kiwa menyang tengen.", "a": true, "e": "Aksara Jawa diwaca lan ditulis saka kiwa menyang tengen." },
+          { "t": "'Sugeng sonten' diucapake nalika wayah sore.", "a": true, "e": "Sonten tegesé sore." },
+          { "t": "'Lara' tegesé sehat.", "a": false, "e": "Lara tegesé sakit." },
+          { "t": "Tembang 'Gundul Pacul' iku tembang dolanan saka Jawa.", "a": true, "e": "Gundul Pacul kalebu tembang dolanan bocah." },
+          { "t": "Wong enom marang wong tuwa kudu nganggo basa ngoko.", "a": false, "e": "Wong enom marang wong tuwa nganggo basa krama." },
+          { "t": "'Cangkriman' iku teka-teki ing basa Jawa.", "a": true, "e": "Cangkriman kudu dibedhek tegesé." },
+          { "t": "Tembung 'rama' lan 'ibu' iku tembung krama kanggo bapak lan ibu.", "a": true, "e": "Rama tegesé bapak, ibu tetep ibu." }
+        ],
+        "sedang": [
+          { "t": "Aksara Jawa iku cacahe ana 20.", "a": true, "e": "Aksara nglegena cacahe 20, saka ha nganti nga." },
+          { "t": "'Dhahar' iku tembung krama alus kanggo mangan.", "a": true, "e": "Dhahar kanggo wong sing kudu diajèni." },
+          { "t": "'Miyos' tegesé lair.", "a": true, "e": "Miyos utawa miyos tegesé lair." },
+          { "t": "'Sare' tegesé turu.", "a": true, "e": "Sare utawa saré tegesé turu, krama alus." },
+          { "t": "'Nyuwun pangapunten' tegesé njaluk ngapura.", "a": true, "e": "Diucapake nalika njaluk pangapura." },
+          { "t": "Tembung 'kembang' kalebu tembung kriya.", "a": false, "e": "Kembang kalebu tembung aran (kata benda)." },
+          { "t": "Gamelan iku piranti musik tradhisional Jawa.", "a": true, "e": "Gamelan ditabuh bebarengan dadi gending." },
+          { "t": "Wayang kulit digawé saka kulit kebo utawa sapi.", "a": true, "e": "Wayang kulit digawé saka kulit kewan kang wis diproses." },
+          { "t": "'Panjenengan' iku tembung krama kanggo 'kowe' utawa 'awakmu'.", "a": true, "e": "Panjenengan dienggo marang wong sing luwih tuwa." },
+          { "t": "Basa krama digunakake marang kanca sing wis akrab.", "a": false, "e": "Kanca akrab biasane nganggo basa ngoko." }
+        ],
+        "sulit": [
+          { "t": "Tembang macapat cacahe ana 11.", "a": true, "e": "Saka Maskumambang nganti Pucung." },
+          { "t": "Tembang Kinanthi kalebu tembang macapat.", "a": true, "e": "Kinanthi klebu tembang macapat." },
+          { "t": "Guru gatra ing tembang macapat tegesé cacahing larik saben pada.", "a": true, "e": "Guru gatra = cacahing gatra utawa larik." },
+          { "t": "Aksara Jawa ora ana sandhangane.", "a": false, "e": "Aksara Jawa duwe sandhangan kanggo ngowahi swara." },
+          { "t": "Pasangan ing aksara Jawa dienggo mateni aksara sadurungé.", "a": true, "e": "Pasangan mateni swara vokal aksara ing ngarepe." },
+          { "t": "Basa ngoko alus digunakake marang wong sing luwih tuwa nanging wis akrab.", "a": true, "e": "Ngoko alus isih ngajèni wong sing diajak guneman." },
+          { "t": "Cerkak iku crita cekak ing basa Jawa.", "a": true, "e": "Cerkak = crita cekak, padha karo cerpen." },
+          { "t": "Purwakanthi guru swara yaiku runtute swara vokal ing tembang.", "a": true, "e": "Purwakanthi guru swara runtut ing swara vokal." },
+          { "t": "Tembung 'dhateng' tegesé menyang.", "a": true, "e": "Dhateng utawa dhateng tegesé menyang, krama." },
+          { "t": "Parikan iku padha karo pantun ing basa Indonesia.", "a": true, "e": "Parikan duwe sampiran lan isi kaya pantun." }
+        ]
+      }
+    },
+    {
+      "id": "eng",
+      "name": "Bahasa Inggris",
+      "icon": "🌍",
+      "levels": {
+        "mudah": [
+          { "t": "'Good morning' artinya selamat pagi.", "a": true, "e": "Good morning diucapkan pada pagi hari." },
+          { "t": "'I have two eyes' artinya saya punya dua mata.", "a": true, "e": "Two eyes artinya dua mata." },
+          { "t": "'Table' artinya kursi.", "a": false, "e": "Table artinya meja, chair artinya kursi." },
+          { "t": "'Red' adalah nama warna.", "a": true, "e": "Red artinya merah." },
+          { "t": "'Cat' artinya kucing.", "a": true, "e": "Cat artinya kucing." },
+          { "t": "'One, two, three' adalah kata bilangan atau angka.", "a": true, "e": "One, two, three artinya satu, dua, tiga." },
+          { "t": "'Thank you' artinya permisi.", "a": false, "e": "Thank you artinya terima kasih." },
+          { "t": "'Apple' adalah nama buah.", "a": true, "e": "Apple artinya apel." },
+          { "t": "'My name is Ani' artinya namaku Ani.", "a": true, "e": "My name is artinya namaku adalah." },
+          { "t": "'Water' artinya api.", "a": false, "e": "Water artinya air, fire artinya api." }
+        ],
+        "sedang": [
+          { "t": "'She is a teacher' artinya dia (perempuan) adalah guru.", "a": true, "e": "She untuk perempuan, he untuk laki-laki." },
+          { "t": "Bentuk jamak dari 'book' adalah 'books'.", "a": true, "e": "Kata benda ditambah -s untuk menyatakan banyak." },
+          { "t": "'Sunday' adalah nama hari.", "a": true, "e": "Sunday artinya hari Minggu." },
+          { "t": "'Big' adalah antonim dari 'small'.", "a": true, "e": "Big artinya besar, small artinya kecil." },
+          { "t": "'Where are you from?' dipakai untuk menanyakan asal seseorang.", "a": true, "e": "Jawabannya misalnya: I am from Bandung." },
+          { "t": "'I like mango' artinya saya tidak suka mangga.", "a": false, "e": "I like mango artinya saya suka mangga." },
+          { "t": "'Foot' adalah bagian tubuh.", "a": true, "e": "Foot artinya kaki." },
+          { "t": "'How old are you?' dipakai untuk menanyakan umur.", "a": true, "e": "Jawabannya misalnya: I am nine years old." },
+          { "t": "'Twenty' artinya 12.", "a": false, "e": "Twenty artinya 20, twelve artinya 12." },
+          { "t": "'I go to school every day' adalah kalimat sederhana dalam present tense.", "a": true, "e": "Kegiatan yang biasa dilakukan memakai present tense." }
+        ],
+        "sulit": [
+          { "t": "'There are five pencils on the table' artinya ada lima pensil di atas meja.", "a": true, "e": "There are dipakai untuk benda banyak." },
+          { "t": "'He don't like milk' adalah kalimat yang benar.", "a": false, "e": "Yang benar adalah He doesn't like milk." },
+          { "t": "'Vegetables' artinya sayuran.", "a": true, "e": "Vegetables artinya sayur-sayuran." },
+          { "t": "'Behind' artinya di depan.", "a": false, "e": "Behind artinya di belakang, in front of artinya di depan." },
+          { "t": "'What time is it?' dipakai untuk menanyakan waktu.", "a": true, "e": "Jawabannya misalnya: It is seven o'clock." },
+          { "t": "'I am reading a book' menunjukkan kegiatan yang sedang dilakukan.", "a": true, "e": "Present continuous memakai to be + verb-ing." },
+          { "t": "'Yesterday' menunjukkan waktu sekarang.", "a": false, "e": "Yesterday artinya kemarin." },
+          { "t": "'May I borrow your pen?' adalah kalimat permintaan izin.", "a": true, "e": "May I dipakai untuk meminta izin dengan sopan." },
+          { "t": "Angka 'fifteen' lebih kecil daripada 'fifty'.", "a": true, "e": "Fifteen 15, fifty 50." },
+          { "t": "'Bigger' adalah bentuk perbandingan dari 'big'.", "a": true, "e": "Kata sifat pendek ditambah -er untuk membandingkan." }
+        ]
+      }
+    },
+    {
+      "id": "sr",
+      "name": "Seni Rupa",
+      "icon": "🎨",
+      "levels": {
+        "mudah": [
+          { "t": "Warna merah, kuning, dan biru disebut warna primer.", "a": true, "e": "Warna primer tidak dapat dibuat dari campuran warna lain." },
+          { "t": "Pensil digunakan untuk menggambar garis.", "a": true, "e": "Pensil memberi garis tipis dan mudah dihapus." },
+          { "t": "Krayon menghasilkan warna yang lebih tebal daripada pensil warna.", "a": true, "e": "Krayon terbuat dari lilin sehingga warnanya pekat." },
+          { "t": "Kertas gambar adalah media untuk menggambar.", "a": true, "e": "Kertas, kain, dan kayu dapat dipakai sebagai media." },
+          { "t": "Warna hijau dihasilkan dari campuran biru dan kuning.", "a": true, "e": "Biru + kuning = hijau." },
+          { "t": "Kuas digunakan untuk melukis dengan cat air.", "a": true, "e": "Kuas membantu mengoleskan cat ke media." },
+          { "t": "Saat mewarnai, warna sebaiknya keluar dari garis gambar.", "a": false, "e": "Mewarnai sebaiknya rapi di dalam garis." },
+          { "t": "Bentuk dasar gambar antara lain lingkaran, persegi, dan segitiga.", "a": true, "e": "Bentuk dasar membantu menggambar benda." },
+          { "t": "Gunting dan lem tidak diperlukan dalam membuat kolase.", "a": false, "e": "Kolase dibuat dengan menempel potongan bahan." },
+          { "t": "Bahan alam seperti daun dapat dipakai membuat karya seni.", "a": true, "e": "Daun, biji, dan ranting bisa jadi bahan kolase." }
+        ],
+        "sedang": [
+          { "t": "Warna sekunder adalah hasil campuran dua warna primer.", "a": true, "e": "Contohnya jingga, hijau, dan ungu." },
+          { "t": "Teknik menempel potongan kertas menjadi gambar disebut kolase.", "a": true, "e": "Kolase memakai bahan yang ditempel." },
+          { "t": "Warna putih dan hitam disebut warna netral.", "a": true, "e": "Warna netral tidak termasuk warna primer maupun sekunder." },
+          { "t": "Gradasi warna berarti memberi warna yang sama tanpa perubahan.", "a": false, "e": "Gradasi berarti peralihan warna dari terang ke gelap." },
+          { "t": "Batik termasuk karya seni rupa tradisional Indonesia.", "a": true, "e": "Batik diakui UNESCO sebagai warisan budaya." },
+          { "t": "Karya seni rupa tiga dimensi memiliki panjang, lebar, dan tinggi.", "a": true, "e": "Karya tiga dimensi dapat dilihat dari berbagai sisi." },
+          { "t": "Gambar ilustrasi berfungsi memperjelas isi cerita.", "a": true, "e": "Ilustrasi membuat cerita lebih menarik." },
+          { "t": "Mozaik dibuat dari potongan bahan kecil yang disusun.", "a": true, "e": "Potongan kertas, biji, atau kaca disusun rapat." },
+          { "t": "Sudut pandang saat menggambar tidak mempengaruhi hasil gambar.", "a": false, "e": "Sudut pandang mengubah bentuk yang terlihat." },
+          { "t": "Cara menggambar dengan titik-titik disebut teknik pointilis.", "a": true, "e": "Titik yang rapat memberi kesan gelap." }
+        ],
+        "sulit": [
+          { "t": "Warna tersier dihasilkan dari campuran warna primer dan sekunder.", "a": true, "e": "Misalnya merah dengan ungu menghasilkan merah-ungu." },
+          { "t": "Prinsip keseimbangan membuat karya seni tampak serasi.", "a": true, "e": "Keseimbangan dapat simetris atau asimetris." },
+          { "t": "Teknik cetak tinggi adalah salah satu teknik dalam seni grafis.", "a": true, "e": "Contoh cetak tinggi adalah cetak pelepah pisang." },
+          { "t": "Batik cap dibuat dengan lilin yang digambar memakai canting.", "a": false, "e": "Itu cara batik tulis; batik cap memakai cap atau stempel." },
+          { "t": "Patung termasuk karya seni rupa tiga dimensi.", "a": true, "e": "Patung memiliki volume dan dapat dipandang dari segala arah." },
+          { "t": "Pencahayaan tidak mempengaruhi kesan gelap terang pada gambar.", "a": false, "e": "Cahaya menimbulkan bayangan dan kesan tiga dimensi." },
+          { "t": "Fotografi termasuk cabang seni rupa yang menghasilkan karya dua dimensi.", "a": true, "e": "Foto memiliki panjang dan lebar." },
+          { "t": "Motif geometris pada batik seperti kawung tersusun tidak beraturan.", "a": false, "e": "Motif geometris tersusun teratur dan berulang." },
+          { "t": "Menyusun warna kontras dapat memperkuat kesan tertentu pada karya.", "a": true, "e": "Warna kontras membuat gambar lebih menonjol." },
+          { "t": "Anyaman bambu termasuk karya seni kriya.", "a": true, "e": "Kriya adalah karya seni yang berguna dan dibuat dengan tangan." }
+        ]
+      }
+    }
+  ]
+}
