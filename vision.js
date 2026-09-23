@@ -5,19 +5,23 @@
  *  1. Setiap frame video dikecilkan ke kanvas 96×72 lalu diubah ke grayscale.
  *  2. Frame pertama dipakai sebagai "latar" (kelas yang kosong).
  *  3. Piksel yang berbeda jauh dari latar dianggap "ada orang".
- *  4. Jumlah piksel berbeda dihitung pada dua zona: KIRI (<=42% lebar) dan
- *     KANAN (>=58% lebar). Pita tengah diabaikan sebagai daerah netral.
- *  5. Zona yang dominan harus bertahan `dwellMs` milidetik sebelum dianggap
- *     jawaban final ("benar" = kiri, "salah" = kanan).
+ *  4. Jawaban ditentukan oleh TITIK PUSAT BADAN (rata-rata letak piksel yang
+ *     berubah), bukan oleh luas zona. Pusat badan di kiri 35% lebar gambar =
+ *     "benar", di kanan 35% = "salah", dan pita tengah 35%–65% netral.
+ *     Dengan begitu murid yang hanya menyinggul atau berjalan melewati tengah
+ *     layar tidak menjawab secara tidak sengaja.
+ *  5. Pusat badan juga harus bertahan `dwellMs` milidetik sebelum dianggap
+ *     jawaban final — murid yang sekadar lewat tidak terhitung.
+ *  6. Badan harus menutupi minimal MIN_MASS dari gambar; perubahan kecil
+ *     (lampu, pintu, kursi) diabaikan.
  *
  * Latar diperbarui otomatis hanya saat tak ada orang (dan saat kalibrasi ulang),
  * jadi murid yang diam beberapa detik tidak "menghilang" dari deteksi.
  */
 (function () {
   const W = 96, H = 72;          // ukuran kanvas analisis
-  const ZONE_EDGE = 0.42;        // zona kiri < 42%, zona kanan > 58%
-  const MIN_PRESENCE = 0.055;    // minimal 5,5% piksel zona berubah
-  const DOMINANCE = 1.30;        // zona dominan harus 30% lebih kuat
+  const ZONE_EDGE = 0.35;        // pusat badan di kiri 35% / kanan 65% (netral 30%)
+  const MIN_MASS = 0.03;         // badan harus menutupi ≥3% gambar
   const EMPTY_TOTAL = 0.02;      // dianggap kosong bila < 2% piksel total berubah
 
   class ZoneVision {
@@ -43,7 +47,6 @@
       this.emptyFrames = 0;
       this.lastUi = 0;
       this.running = false;
-      this.frames = 0;
       this.ready = false;
     }
 
@@ -102,7 +105,6 @@
 
       if (!this.bg) {                         // kalibrasi: latar = frame ini
         this.bg = gray.slice(0);
-        this.frames = 0;
         this.ready = true;
         this.onUpdate(this.state());
         return;
@@ -110,20 +112,22 @@
 
       const thr = [0, 13, 17, 21, 25, 30][Math.min(5, Math.max(1, this.sensitivity))];
       const edgeX = Math.floor(W * ZONE_EDGE);
-      let leftHit = 0, rightHit = 0, total = 0;
+      let leftHit = 0, rightHit = 0, total = 0, sumX = 0;
       for (let y = 0; y < H; y++) {
         for (let x = 0; x < W; x++) {
           const i = y * W + x;
           const diff = Math.abs(gray[i] - this.bg[i]);
           if (diff > thr) {
             total++;
+            sumX += x;
             if (x < edgeX) leftHit++;
             else if (x >= W - edgeX) rightHit++;
           }
         }
       }
-      const leftN = edgeX * H, rightN = edgeX * H;
-      let L = leftHit / leftN, R = rightHit / rightN, T = total / (W * H);
+      const zoneN = edgeX * H;
+      let L = leftHit / zoneN, R = rightHit / zoneN, T = total / (W * H);
+      const centroid = total ? sumX / total : -1;   // titik pusat badan (kolom)
 
       // Latar diperbarui hanya ketika ruangan kosong → murid diam tetap terbaca.
       if (T < EMPTY_TOTAL) {
@@ -137,8 +141,10 @@
 
       if (!this.locked) {
         let cand = null;
-        if (L >= MIN_PRESENCE && L > R * DOMINANCE) cand = 'benar';
-        else if (R >= MIN_PRESENCE && R > L * DOMINANCE) cand = 'salah';
+        if (T >= MIN_MASS) {
+          if (centroid < W * ZONE_EDGE) cand = 'benar';
+          else if (centroid > W * (1 - ZONE_EDGE)) cand = 'salah';
+        }
 
         const now = performance.now();
         if (cand && cand === this.candidate) {
