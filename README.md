@@ -1,4 +1,8 @@
-# Game Benar / Salah — Kelas 3 SD
+# Game Edukasi — Kelas 3 SD
+
+Dua game interaktif untuk papan interaktif digital (PID) & kelas 3 SD:
+
+## 1. Game Benar / Salah (index.html)
 
 Game soal benar/salah yang dijawab dengan gerakan badan di depan kamera:
 
@@ -8,6 +12,13 @@ Game soal benar/salah yang dijawab dengan gerakan badan di depan kamera:
 Teks soal tampil besar di bagian atas, kamera di bawahnya. Tersedia 210 soal
 (7 mapel × mudah/sedang/sulit): Pendidikan Pancasila, Bahasa Indonesia,
 Matematika, IPAS, Basa Jawa, Bahasa Inggris, dan Seni Rupa.
+
+## 2. Tarik Tambang (tarik-tambang.html)
+
+Game tarik tambang dua tim untuk PID — jawab soal pilihan ganda A–D untuk
+menarik tali. Simpul tali setiap tim mulai 5 langkah dari garis tengah;
+menyentuh garis tengah = kalah! Tersedia 105 soal pilihan ganda
+(`questions-tt.json`). Buka langsung `tarik-tambang.html`.
 
 ## Menjalankan
 

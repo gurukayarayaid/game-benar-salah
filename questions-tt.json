@@ -1,0 +1,201 @@
+{
+  "version": 1,
+  "subjects": [
+    {
+      "id": "pp",
+      "name": "Pendidikan Pancasila",
+      "icon": "🇮🇩",
+      "levels": {
+        "mudah": [
+          { "t": "Lambang negara Indonesia adalah …", "o": ["Garuda Pancasila", "Elang Jawa", "Rajawali Putih", "Merpati Perdamaian"], "a": 0, "e": "Lambang negara Indonesia adalah Garuda Pancasila dengan semboyan Bhinneka Tunggal Ika." },
+          { "t": "Pancasila terdiri atas … sila.", "o": ["3", "4", "5", "6"], "a": 2, "e": "Pancasila berarti lima dasar, jadi terdiri atas 5 sila." },
+          { "t": "Bendera negara Indonesia berwarna …", "o": ["merah dan hijau", "merah dan putih", "putih dan biru", "kuning dan putih"], "a": 1, "e": "Bendera Indonesia berwarna merah di atas dan putih di bawah." },
+          { "t": "Lagu kebangsaan Indonesia adalah …", "o": ["Halo-Halo Bandung", "Ampar-Ampar Pisang", "Indonesia Raya", "Lir-Ilir"], "a": 2, "e": "Indonesia Raya diciptakan oleh W.R. Supratman." },
+          { "t": "Semboyan bangsa Indonesia adalah …", "o": ["Tut Wuri Handayani", "Bhinneka Tunggal Ika", "Jer Basuki Mawa Beya", "Rawe-rawe rantas"], "a": 1, "e": "Bhinneka Tunggal Ika berarti berbeda-beda tetapi tetap satu." }
+        ],
+        "sedang": [
+          { "t": "Simbol sila pertama Pancasila adalah …", "o": ["bintang", "rantai emas", "pohon beringin", "padi dan kapas"], "a": 0, "e": "Sila pertama 'Ketuhanan yang Maha Esa' berlambang bintang." },
+          { "t": "Simbol sila kedua Pancasila adalah …", "o": ["pohon beringin", "kepala banteng", "rantai emas", "bintang"], "a": 2, "e": "Sila kedua 'Kemanusiaan yang adil dan beradab' berlambang rantai emas." },
+          { "t": "Simbol sila ketiga Pancasila adalah …", "o": ["padi dan kapas", "pohon beringin", "bintang", "rantai emas"], "a": 1, "e": "Sila ketiga 'Persatuan Indonesia' berlambang pohon beringin." },
+          { "t": "Simbol sila keempat Pancasila adalah …", "o": ["kepala banteng", "pohon beringin", "padi dan kapas", "bintang"], "a": 0, "e": "Sila keempat 'Kerakyatan yang dipimpin oleh hikmat kebijaksanaan' berlambang kepala banteng." },
+          { "t": "Simbol sila kelima Pancasila adalah …", "o": ["kepala banteng", "bintang", "padi dan kapas", "rantai emas"], "a": 2, "e": "Sila kelima 'Keadilan sosial' berlambang padi dan kapas." }
+        ],
+        "sulit": [
+          { "t": "Jumlah bulu pada sayap Garuda Pancasila adalah …", "o": ["17", "8", "19", "45"], "a": 0, "e": "17 bulu melambangkan tanggal kemerdekaan Indonesia, 17 Agustus." },
+          { "t": "Semboyan Bhinneka Tunggal Ika diambil dari kitab …", "o": ["Negarakertagama", "Sutasoma", "Pararaton", "Arjunawiwaha"], "a": 1, "e": "Bhinneka Tunggal Ika berasal dari Kitab Sutasoma karya Mpu Tantular." },
+          { "t": "Pancasila ditetapkan sebagai dasar negara pada tanggal …", "o": ["17 Agustus 1945", "1 Juni 1945", "18 Agustus 1945", "28 Oktober 1928"], "a": 2, "e": "Sidang PPKI tanggal 18 Agustus 1945 menetapkan Pancasila sebagai dasar negara." },
+          { "t": "Keputusan hasil musyawarah sebaiknya …", "o": ["dilaksanakan dengan tanggung jawab", "diabaikan bila tidak cocok", "ditunda terus-menerus", "diganti dengan keputusan sendiri"], "a": 0, "e": "Keputusan hasil musyawarah harus dilaksanakan dengan penuh tanggung jawab." },
+          { "t": "Membuang sampah ke sungai adalah …", "o": ["pengamalan sila kedua", "pengamalan sila kelima", "perbuatan yang sesuai Pancasila", "perbuatan yang tidak sesuai Pancasila"], "a": 3, "e": "Membuang sampah ke sungai merusak lingkungan, tidak sesuai sila kedua dan kelima." }
+        ]
+      }
+    },
+    {
+      "id": "bi",
+      "name": "Bahasa Indonesia",
+      "icon": "📖",
+      "levels": {
+        "mudah": [
+          { "t": "Antonim (lawan kata) dari 'besar' adalah …", "o": ["tinggi", "panjang", "kecil", "berat"], "a": 2, "e": "Lawan kata besar adalah kecil." },
+          { "t": "Sinonim (persamaan kata) dari 'pintar' adalah …", "o": ["pandai", "malas", "rajin", "bodoh"], "a": 0, "e": "Pintar sama artinya dengan pandai." },
+          { "t": "Kalimat tanya diakhiri dengan tanda …", "o": ["titik (.)", "tanda tanya (?)", "tanda seru (!)", "tanda koma (,)"], "a": 1, "e": "Kalimat tanya diakhiri tanda tanya (?)." },
+          { "t": "Kata 'sekolah' terdiri dari … suku kata.", "o": ["2", "3", "4", "5"], "a": 1, "e": "Se-ko-lah, ada tiga suku kata." },
+          { "t": "Huruf kapital dipakai untuk menulis …", "o": ["semua kata", "awal kalimat dan nama orang", "kata tanya", "angka"], "a": 1, "e": "Huruf kapital dipakai di awal kalimat dan nama orang, misalnya Budi." }
+        ],
+        "sedang": [
+          { "t": "Kata dasar dari 'membaca' adalah …", "o": ["baca", "embaca", "membac", "acab"], "a": 0, "e": "me- + baca menjadi membaca, kata dasarnya baca." },
+          { "t": "Pantun terdiri dari … baris.", "o": ["2", "3", "4", "5"], "a": 2, "e": "Pantun terdiri dari 4 baris: sampiran dan isi, berima a-b-a-b." },
+          { "t": "Kata 'anak-anak' termasuk kata …", "o": ["ulang", "dasar", "kerja", "sifat"], "a": 0, "e": "Anak-anak adalah kata ulang yang menunjukkan jumlah banyak." },
+          { "t": "Cerita yang tokohnya binatang dan berisi pesan moral disebut …", "o": ["legenda", "fabel", "cerpen", "pantun"], "a": 1, "e": "Fabel adalah cerita hewan yang berisi pesan moral." },
+          { "t": "Kata 'tetapi' termasuk kata …", "o": ["depan", "benda", "hubung", "kerja"], "a": 2, "e": "Tetapi, dan, atau adalah kata hubung." }
+        ],
+        "sulit": [
+          { "t": "Penulisan bilangan tingkat yang benar adalah …", "o": ["abad ke 20", "abad ke-20", "abad ke20", "abad 20-ke"], "a": 1, "e": "Bilangan tingkat ditulis dengan ke- dan tanda hubung: abad ke-20." },
+          { "t": "Sinonim kata 'khawatir' adalah …", "o": ["gembira", "cemas", "tenang", "pasti"], "a": 1, "e": "Khawatir sama artinya dengan cemas." },
+          { "t": "Ide pokok sebuah paragraf terdapat pada …", "o": ["kalimat utama", "kalimat penjelas", "judul bacaan", "tanda baca"], "a": 0, "e": "Ide pokok terdapat pada kalimat utama paragraf." },
+          { "t": "Kalimat efektif adalah kalimat yang …", "o": ["panjang dan berulang-ulang", "jelas, singkat, dan tidak boros kata", "memakai banyak kata sama", "tidak punya subjek"], "a": 1, "e": "Kalimat efektif jelas, singkat, dan mudah dipahami." },
+          { "t": "'Para siswa sekalian berbaris.' tidak efektif karena …", "o": ["kurang subjek", "para dan sekalian bermakna sama", "tidak ada kata kerja", "terlalu pendek"], "a": 1, "e": "Para dan sekalian bermakna sama, cukup pakai salah satunya." }
+        ]
+      }
+    },
+    {
+      "id": "mtk",
+      "name": "Matematika",
+      "icon": "🔢",
+      "levels": {
+        "mudah": [
+          { "t": "Hasil dari 7 + 8 adalah …", "o": ["14", "15", "16", "17"], "a": 1, "e": "7 + 8 = 15." },
+          { "t": "Hasil dari 2 × 5 adalah …", "o": ["7", "8", "10", "12"], "a": 2, "e": "Dua kali lima sama dengan sepuluh." },
+          { "t": "Segitiga memiliki … sisi.", "o": ["3", "4", "5", "6"], "a": 0, "e": "Segitiga memiliki 3 sisi." },
+          { "t": "1 jam sama dengan … menit.", "o": ["30", "50", "60", "100"], "a": 2, "e": "1 jam = 60 menit." },
+          { "t": "Setengah dari 20 adalah …", "o": ["5", "10", "15", "20"], "a": 1, "e": "20 : 2 = 10." }
+        ],
+        "sedang": [
+          { "t": "Hasil dari 6 × 7 adalah …", "o": ["36", "42", "48", "49"], "a": 1, "e": "6 × 7 = 42." },
+          { "t": "Hasil dari 48 : 6 adalah …", "o": ["6", "7", "8", "9"], "a": 2, "e": "Karena 6 × 8 = 48, maka 48 : 6 = 8." },
+          { "t": "1 meter sama dengan … sentimeter.", "o": ["10", "100", "1000", "10000"], "a": 1, "e": "1 m = 100 cm." },
+          { "t": "Keliling persegi dengan sisi 5 cm adalah …", "o": ["10 cm", "20 cm", "25 cm", "30 cm"], "a": 1, "e": "Keliling persegi = 4 × sisi = 4 × 5 = 20 cm." },
+          { "t": "Di antara pecahan berikut, yang paling besar adalah …", "o": ["1/4", "1/2", "1/8", "1/10"], "a": 1, "e": "Makin kecil penyebut dengan pembilang sama, makin besar pecahannya. 1/2 paling besar." }
+        ],
+        "sulit": [
+          { "t": "Hasil dari 25 : 5 × 4 adalah …", "o": ["15", "20", "25", "30"], "a": 1, "e": "25 : 5 = 5, lalu 5 × 4 = 20." },
+          { "t": "Luas persegi dengan sisi 6 cm adalah …", "o": ["12 cm²", "24 cm²", "36 cm²", "42 cm²"], "a": 2, "e": "Luas persegi = sisi × sisi = 6 × 6 = 36 cm²." },
+          { "t": "Hasil dari 144 : 12 adalah …", "o": ["10", "11", "12", "14"], "a": 2, "e": "12 × 12 = 144, jadi 144 : 12 = 12." },
+          { "t": "2 minggu sama dengan … hari.", "o": ["7", "10", "14", "21"], "a": 2, "e": "1 minggu = 7 hari, jadi 2 minggu = 14 hari." },
+          { "t": "Kegiatan mulai pukul 08.15 dan selesai 09.00. Lamanya …", "o": ["35 menit", "40 menit", "45 menit", "50 menit"], "a": 2, "e": "Dari 08.15 ke 09.00 ada 45 menit." }
+        ]
+      }
+    },
+    {
+      "id": "ipas",
+      "name": "IPAS",
+      "icon": "🔬",
+      "levels": {
+        "mudah": [
+          { "t": "Matahari terbit di sebelah …", "o": ["barat", "timur", "utara", "selatan"], "a": 1, "e": "Matahari terbit di timur dan terbenam di barat." },
+          { "t": "Hewan pemakan tumbuhan disebut …", "o": ["karnivora", "herbivora", "omnivora", "insektivora"], "a": 1, "e": "Herbivora adalah pemakan tumbuhan, contohnya kambing." },
+          { "t": "Air yang dipanaskan akan berubah menjadi …", "o": ["es", "uap", "batu", "pasir"], "a": 1, "e": "Air yang dipanaskan menguap menjadi uap." },
+          { "t": "Kucing berkembang biak dengan cara …", "o": ["bertelur", "melahirkan", "membelah diri", "bertunas"], "a": 1, "e": "Kucing melahirkan anaknya." },
+          { "t": "Kita dapat melihat benda karena ada …", "o": ["cahaya", "angin", "suara", "bau"], "a": 0, "e": "Tanpa cahaya mata kita tidak dapat melihat." }
+        ],
+        "sedang": [
+          { "t": "Proses tumbuhan membuat makanan dengan bantuan cahaya matahari disebut …", "o": ["pernapasan", "fotosintesis", "penguapan", "penyerbukan"], "a": 1, "e": "Daun mengolah air dan karbon dioksida dengan cahaya matahari (fotosintesis)." },
+          { "t": "Hewan yang hidup di dua alam (air dan darat) disebut …", "o": ["mamalia", "reptil", "amfibi", "aves"], "a": 2, "e": "Amfibi hidup di dua alam, contohnya katak." },
+          { "t": "Rantai makanan dimulai dari …", "o": ["tumbuhan hijau", "hewan pemakan daging", "manusia", "jamur"], "a": 0, "e": "Tumbuhan hijau sebagai produsen menjadi awal rantai makanan." },
+          { "t": "Perubahan wujud dari gas menjadi cair disebut …", "o": ["mencair", "menguap", "mengembun", "membeku"], "a": 2, "e": "Mengembun, contohnya titik-titik air di luar gelas es." },
+          { "t": "Kompas dapat menunjukkan arah karena memiliki …", "o": ["baterai", "magnet", "kaca", "jarum plastik"], "a": 1, "e": "Jarum magnet kompas selalu menunjuk arah utara-selatan." }
+        ],
+        "sulit": [
+          { "t": "Bagian tumbuhan yang menyerap air dari tanah adalah …", "o": ["daun", "batang", "akar", "bunga"], "a": 2, "e": "Akar menyerap air dan zat hara dari dalam tanah." },
+          { "t": "Ikan bernapas dengan …", "o": ["paru-paru", "insang", "kulit", "trakea"], "a": 1, "e": "Ikan bernapas menggunakan insang." },
+          { "t": "Sampah organik dapat diolah menjadi …", "o": ["plastik", "kompos", "kaca", "besi"], "a": 1, "e": "Sampah organik diolah menjadi kompos yang menyuburkan tanah." },
+          { "t": "Perpindahan penduduk dari desa ke kota disebut …", "o": ["imigrasi", "emigrasi", "urbanisasi", "transmigrasi"], "a": 2, "e": "Urbanisasi adalah perpindahan penduduk desa ke kota." },
+          { "t": "Udara di daerah pegunungan biasanya lebih … daripada di pantai.", "o": ["panas", "dingin", "lembap", "kering"], "a": 1, "e": "Semakin tinggi tempat, semakin dingin udaranya." }
+        ]
+      }
+    },
+    {
+      "id": "bj",
+      "name": "Basa Jawa",
+      "icon": "🎭",
+      "levels": {
+        "mudah": [
+          { "t": "'Sugeng enjing' tegesé …", "o": ["selamat siang", "selamat pagi", "selamat sore", "selamat malam"], "a": 1, "e": "Sugeng enjing tegesé selamat pagi." },
+          { "t": "'Matur nuwun' tegesé …", "o": ["permisi", "terima kasih", "maaf", "selamat tinggal"], "a": 1, "e": "Matur nuwun diucapake nalika nampa pitulungan." },
+          { "t": "'Adhi' tegesé …", "o": ["kakak", "adik", "bapak", "om"], "a": 1, "e": "Adhi yaiku sedulur sing luwih enom." },
+          { "t": "'Sare' tegesé …", "o": ["mangan", "turu", "lunga", "ngombe"], "a": 1, "e": "Sare utawa saré tegesé turu." },
+          { "t": "Aksara Jawa ditulis saka …", "o": ["kiwa menyang tengen", "tengen menyang kiwa", "ngisor menyang dhuwur", "dhuwur menyang ngisor"], "a": 0, "e": "Aksara Jawa ditulis saka kiwa (kiri) menyang tengen (kanan)." }
+        ],
+        "sedang": [
+          { "t": "Cacahe aksara Jawa nglegena ana …", "o": ["10", "15", "20", "25"], "a": 2, "e": "Aksara nglegena cacahe 20, saka ha nganti nga." },
+          { "t": "'Dhahar' tegesé …", "o": ["turu", "mangan", "lunga", "seneng"], "a": 1, "e": "Dhahar iku tembung krama alus kanggo mangan." },
+          { "t": "Gamelan iku …", "o": ["piranti musik tradhisional Jawa", "panganan Jawa", "sandhangan adat", "game dolanan HP"], "a": 0, "e": "Gamelan ditabuh bebarengan dadi gending." },
+          { "t": "Wayang kulit digawé saka …", "o": ["kayu", "kertas", "kulit kebo utawa sapi", "kain"], "a": 2, "e": "Wayang kulit digawé saka kulit kebo kang wis diproses." },
+          { "t": "'Nyuwun pangapunten' tegesé …", "o": ["njaluk pangan", "njaluk ngapura", "njaluk dhuwit", "njaluk tulung"], "a": 1, "e": "Nyuwun pangapunten diucapake nalika njaluk ngapura." }
+        ],
+        "sulit": [
+          { "t": "Tembang macapat cacahe ana …", "o": ["9", "10", "11", "12"], "a": 2, "e": "Tembang macapat ana 11, saka Maskumambang nganti Pucung." },
+          { "t": "Tembang Kinanthi kalebu tembang …", "o": ["dolanan", "macapat", "gamelan", "langgam"], "a": 1, "e": "Kinanthi klebu salah sawijining tembang macapat." },
+          { "t": "Pasangan ing aksara Jawa dienggo …", "o": ["mateni aksara sadurungé", "nambah swara", "nggawe aksara dadi gedhe", "werna-werna aksara"], "a": 0, "e": "Pasangan mateni swara vokal aksara ing ngarepe." },
+          { "t": "Cerkak iku …", "o": ["crita cekak ing basa Jawa", "tembang macapat", "pranatacara", "aksara Jawa"], "a": 0, "e": "Cerkak = crita cekak, padha karo cerpen." },
+          { "t": "Parikan iku padha karo … ing basa Indonesia.", "o": ["pantun", "cerpen", "puisi bebas", "legenda"], "a": 0, "e": "Parikan duwe sampiran lan isi kaya pantun." }
+        ]
+      }
+    },
+    {
+      "id": "eng",
+      "name": "Bahasa Inggris",
+      "icon": "🌍",
+      "levels": {
+        "mudah": [
+          { "t": "'Good morning' artinya …", "o": ["selamat pagi", "selamat malam", "selamat tidur", "sampai jumpa"], "a": 0, "e": "Good morning diucapkan pada pagi hari." },
+          { "t": "'Cat' artinya …", "o": ["anjing", "kucing", "ayam", "bebek"], "a": 1, "e": "Cat artinya kucing." },
+          { "t": "'Red' adalah nama warna, artinya …", "o": ["biru", "hijau", "merah", "kuning"], "a": 2, "e": "Red artinya merah." },
+          { "t": "'Thank you' artinya …", "o": ["maaf", "permisi", "terima kasih", "tolong"], "a": 2, "e": "Thank you diucapkan untuk berterima kasih." },
+          { "t": "'One, two, three' adalah kata …", "o": ["warna", "bilangan", "hari", "buah"], "a": 1, "e": "One, two, three artinya satu, dua, tiga — kata bilangan." }
+        ],
+        "sedang": [
+          { "t": "Bentuk jamak dari 'book' adalah …", "o": ["bookes", "books", "bookies", "book"], "a": 1, "e": "Kata benda ditambah -s untuk menyatakan banyak: books." },
+          { "t": "'Sunday' artinya hari …", "o": ["Sabtu", "Senin", "Minggu", "Jumat"], "a": 2, "e": "Sunday artinya hari Minggu." },
+          { "t": "Antonim dari 'big' adalah …", "o": ["small", "tall", "long", "fast"], "a": 0, "e": "Big artinya besar, small artinya kecil." },
+          { "t": "'How old are you?' dipakai untuk menanyakan …", "o": ["nama", "umur", "alamat", "warna kesukaan"], "a": 1, "e": "Jawabannya misalnya: I am nine years old." },
+          { "t": "'Twenty' artinya …", "o": ["12", "20", "22", "30"], "a": 1, "e": "Twenty artinya 20, twelve artinya 12." }
+        ],
+        "sulit": [
+          { "t": "'There are five pencils on the table' artinya …", "o": ["ada lima pensil di atas meja", "ada lima buku di meja", "lima pensil itu milik saya", "taruh pensil di atas meja"], "a": 0, "e": "There are dipakai untuk menyatakan banyak benda." },
+          { "t": "Kalimat yang benar adalah …", "o": ["He don't like milk.", "He doesn't like milk.", "He not like milk.", "He doesn't likes milk."], "a": 1, "e": "Setelah doesn't, kata kerja kembali bentuk dasar: doesn't like." },
+          { "t": "'Behind' artinya …", "o": ["di depan", "di belakang", "di samping", "di atas"], "a": 1, "e": "Behind artinya di belakang, in front of artinya di depan." },
+          { "t": "'Yesterday' artinya …", "o": ["hari ini", "besok", "kemarin", "nanti"], "a": 2, "e": "Yesterday artinya kemarin." },
+          { "t": "Angka yang lebih kecil adalah …", "o": ["fifteen", "fifty", "fifty-five", "fifteen hundred"], "a": 0, "e": "Fifteen = 15, fifty = 50." }
+        ]
+      }
+    },
+    {
+      "id": "sr",
+      "name": "Seni Rupa",
+      "icon": "🎨",
+      "levels": {
+        "mudah": [
+          { "t": "Warna merah, kuning, dan biru disebut warna …", "o": ["primer", "sekunder", "tersier", "netral"], "a": 0, "e": "Warna primer tidak dapat dibuat dari campuran warna lain." },
+          { "t": "Campuran warna biru dan kuning menghasilkan warna …", "o": ["hijau", "jingga", "ungu", "cokelat"], "a": 0, "e": "Biru + kuning = hijau." },
+          { "t": "Kuas digunakan untuk …", "o": ["melukis dengan cat", "menggunting kertas", "menempel bahan", "mengukur kertas"], "a": 0, "e": "Kuas membantu mengoleskan cat ke media." },
+          { "t": "Saat mewarnai, warna sebaiknya …", "o": ["keluar dari garis", "rapi di dalam garis", "tidak rapi", "dicampur sembarangan"], "a": 1, "e": "Mewarnai sebaiknya rapi di dalam garis agar hasil bagus." },
+          { "t": "Pensil digunakan untuk …", "o": ["menghapus gambar", "menggambar garis", "mewarnai tebal", "menempel"], "a": 1, "e": "Pensil memberi garis tipis dan mudah dihapus." }
+        ],
+        "sedang": [
+          { "t": "Warna sekunder adalah hasil campuran …", "o": ["dua warna primer", "dua warna netral", "hitam dan putih", "semua warna"], "a": 0, "e": "Contoh warna sekunder: jingga, hijau, dan ungu." },
+          { "t": "Teknik menempel potongan kertas menjadi gambar disebut …", "o": ["mozaik", "kolase", "sketsa", "pointilis"], "a": 1, "e": "Kolase dibuat dari bahan yang ditempel." },
+          { "t": "Warna putih dan hitam disebut warna …", "o": ["primer", "sekunder", "netral", "tersier"], "a": 2, "e": "Warna netral tidak termasuk primer maupun sekunder." },
+          { "t": "Batik termasuk karya seni rupa tradisional dari …", "o": ["Indonesia", "Belanda", "Jepang", "Mesir"], "a": 0, "e": "Batik diakui UNESCO sebagai warisan budaya Indonesia." },
+          { "t": "Mozaik dibuat dari …", "o": ["potongan bahan kecil yang disusun", "cairan yang dituang", "tanah liat yang dibakar", "benang yang dianyam"], "a": 0, "e": "Potongan kertas, biji, atau kaca disusun rapat menjadi mozaik." }
+        ],
+        "sulit": [
+          { "t": "Warna tersier dihasilkan dari campuran …", "o": ["warna primer dan sekunder", "hitam dan putih", "dua warna netral", "cahaya dan air"], "a": 0, "e": "Misalnya merah (primer) dengan ungu (sekunder) menghasilkan merah-ungu." },
+          { "t": "Patung termasuk karya seni rupa …", "o": ["dua dimensi", "tiga dimensi", "grafis", "digital"], "a": 1, "e": "Patung memiliki volume dan dapat dipandang dari segala arah." },
+          { "t": "Batik cap dibuat dengan memakai …", "o": ["canting", "cap atau stempel", "kuas air", "mesin jahit"], "a": 1, "e": "Batik tulis memakai canting; batik cap memakai cap atau stempel." },
+          { "t": "Cara menggambar dengan titik-titik disebut teknik …", "o": ["pointilis", "kolase", "aquarel", "blok"], "a": 0, "e": "Titik yang rapat memberi kesan gelap — teknik pointilis." },
+          { "t": "Anyaman bambu termasuk karya seni …", "o": ["kriya", "lukis", "grafis", "fotografi"], "a": 0, "e": "Seni kriya adalah karya berguna yang dibuat dengan tangan." }
+        ]
+      }
+    }
+  ]
+}

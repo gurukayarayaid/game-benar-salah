@@ -1,0 +1,324 @@
+/* ══════════ Game Tarik Tambang — gaya ══════════
+   Semua ukuran memakai clamp(..., vmin, ...) supaya tampilan ikut membesar
+   di layar PID besar, tetap rapi di desktop, dan tidak sesak di Android. */
+
+:root {
+  --blue: #38b6ff;
+  --blue-dark: #0e5fa8;
+  --red: #ff5d6c;
+  --red-dark: #8c1b2a;
+  --accent: #ff9f43;
+  --accent-2: #ffd166;
+  --bg-1: #101a3a;
+  --bg-2: #1b2a5c;
+  --surface: rgba(255, 255, 255, .08);
+  --border: rgba(255, 255, 255, .18);
+  --text: #f4f7ff;
+  --muted: #b8c2e0;
+  --ok: #2fd07b;
+  --danger: #ff5d6c;
+  --radius: clamp(12px, 1.6vmin, 26px);
+  --pad: clamp(10px, 1.8vmin, 30px);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+  color: var(--text);
+  background: radial-gradient(120% 120% at 15% 0%, var(--bg-2) 0%, var(--bg-1) 55%, #070c1c 100%);
+  overflow: hidden;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+button { font-family: inherit; cursor: pointer; border: 0; color: inherit; }
+input, select { font-family: inherit; }
+a { color: var(--accent-2); }
+
+.screen {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  padding: calc(env(safe-area-inset-top) + var(--pad)) var(--pad)
+           calc(env(safe-area-inset-bottom) + var(--pad));
+  overflow: auto;
+}
+
+/* ══════════ MENU ══════════ */
+.menu-wrap { margin: auto; width: 100%; max-width: 1500px; display: flex; flex-direction: column; gap: clamp(12px, 2vmin, 28px); }
+.menu-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: clamp(8px, 1.4vmin, 18px); }
+.brand-icon { font-size: clamp(30px, 6vmin, 74px); }
+.brand h1 { font-size: clamp(20px, 3.4vmin, 46px); line-height: 1.15; }
+.brand .sub { color: var(--muted); font-size: clamp(12px, 1.5vmin, 22px); }
+.head-actions { display: flex; align-items: center; gap: clamp(6px, 1vmin, 14px); }
+.badge {
+  background: var(--surface); border: 1px solid var(--border); color: var(--muted);
+  padding: clamp(4px, .7vmin, 10px) clamp(8px, 1.2vmin, 18px);
+  border-radius: 999px; font-size: clamp(11px, 1.3vmin, 18px); white-space: nowrap;
+}
+.icon-btn {
+  width: clamp(34px, 5.2vmin, 64px); height: clamp(34px, 5.2vmin, 64px);
+  border-radius: var(--radius); background: var(--surface); border: 1px solid var(--border);
+  font-size: clamp(15px, 2.2vmin, 28px); display: grid; place-items: center;
+}
+.icon-btn:hover { border-color: var(--accent); }
+.icon-btn.danger:hover { border-color: var(--danger); color: var(--danger); }
+
+.menu-grid { display: grid; gap: clamp(10px, 1.6vmin, 24px); grid-template-columns: 1fr; }
+@media (min-width: 900px) { .menu-grid { grid-template-columns: 1.15fr .85fr; align-items: start; } }
+.panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: clamp(12px, 2vmin, 30px);
+  display: flex; flex-direction: column; gap: clamp(8px, 1.3vmin, 20px);
+  backdrop-filter: blur(6px);
+}
+.panel h2 { font-size: clamp(15px, 2vmin, 28px); }
+.field { display: flex; flex-direction: column; gap: clamp(4px, .7vmin, 10px); font-size: clamp(12px, 1.5vmin, 20px); }
+.field > span { color: var(--muted); }
+.field select, .field input[type="text"] {
+  background: rgba(8, 14, 32, .55); border: 1px solid var(--border); color: var(--text);
+  padding: clamp(9px, 1.3vmin, 18px) clamp(10px, 1.2vmin, 18px);
+  border-radius: var(--radius); font-size: clamp(13px, 1.6vmin, 22px); outline: none; width: 100%;
+}
+.field select:focus, .field input:focus { border-color: var(--accent); }
+
+.adv { border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(6px, 1vmin, 14px) clamp(10px, 1.3vmin, 18px); }
+.adv summary { cursor: pointer; color: var(--muted); font-size: clamp(12px, 1.5vmin, 20px); }
+.adv[open] { display: flex; flex-direction: column; gap: clamp(8px, 1.2vmin, 16px); }
+
+.primary-btn {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #201400; font-weight: 800; border-radius: var(--radius);
+  padding: clamp(12px, 1.8vmin, 26px); font-size: clamp(15px, 2.1vmin, 30px);
+}
+.primary-btn:hover { filter: brightness(1.06); }
+.ghost-btn {
+  background: rgba(8, 14, 32, .4); border: 1px solid var(--border); color: var(--text);
+  border-radius: var(--radius); padding: clamp(9px, 1.3vmin, 18px) clamp(12px, 1.6vmin, 24px);
+  font-size: clamp(12px, 1.6vmin, 22px);
+}
+.ghost-btn:hover { border-color: var(--accent); }
+.hint { color: var(--muted); font-size: clamp(11px, 1.3vmin, 18px); line-height: 1.6; }
+
+.rules { display: flex; gap: clamp(6px, 1vmin, 14px); }
+.rule {
+  flex: 1; border-radius: var(--radius); padding: clamp(8px, 1.2vmin, 18px);
+  display: flex; flex-direction: column; gap: 2px; border: 1.5px solid var(--border);
+}
+.rule b { font-size: clamp(13px, 1.7vmin, 24px); }
+.rule span { font-size: clamp(11px, 1.4vmin, 19px); color: var(--muted); }
+.rule.blue { background: rgba(56, 182, 255, .12); border-color: rgba(56, 182, 255, .45); }
+.rule.red { background: rgba(255, 93, 108, .12); border-color: rgba(255, 93, 108, .45); }
+
+.howto { display: flex; flex-direction: column; gap: clamp(6px, 1vmin, 14px); padding-left: clamp(18px, 2.4vmin, 34px); font-size: clamp(12px, 1.6vmin, 22px); line-height: 1.55; }
+.howto b { color: var(--accent-2); }
+
+/* ══════════ BERMAIN ══════════ */
+#screenPlay { gap: clamp(6px, 1vmin, 16px); }
+.play-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; flex: 0 0 auto; }
+.chips { display: flex; gap: clamp(4px, .8vmin, 12px); flex-wrap: wrap; }
+.chip {
+  background: var(--surface); border: 1px solid var(--border); color: var(--muted);
+  padding: clamp(3px, .6vmin, 8px) clamp(8px, 1.1vmin, 16px);
+  border-radius: 999px; font-size: clamp(11px, 1.4vmin, 20px); white-space: nowrap;
+}
+.chip.turn { color: var(--accent-2); border-color: rgba(255, 209, 102, .5); font-weight: 700; }
+.play-actions { display: flex; align-items: center; gap: clamp(4px, .8vmin, 12px); }
+.timer-chip {
+  position: relative; min-width: clamp(56px, 8vmin, 120px); height: clamp(30px, 4.6vmin, 56px);
+  border-radius: 999px; background: var(--surface); border: 1px solid var(--border);
+  display: grid; place-items: center; overflow: hidden;
+}
+.timer-chip i { position: absolute; inset: 0; width: 100%; background: rgba(255, 159, 67, .3); transition: width .15s linear; }
+.timer-chip b { position: relative; font-size: clamp(13px, 1.8vmin, 26px); }
+.timer-chip.low b { color: #ffd7db; }
+.timer-chip.low i { background: rgba(255, 93, 108, .45); }
+
+.question-box {
+  flex: 0 0 auto; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: clamp(6px, 1vmin, 18px) clamp(12px, 2vmin, 32px);
+  text-align: center;
+}
+/* Opsi jawaban kini DI BAWAH arena — tombol besar ramah sentuhan PID. */
+.options {
+  flex: 0 0 auto;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(5px, .9vmin, 16px);
+}
+@media (max-width: 700px) { .options { grid-template-columns: repeat(2, 1fr); } }
+.q-label { color: var(--muted); font-size: clamp(11px, 1.5vmin, 22px); letter-spacing: .04em; text-transform: uppercase; }
+.q-label b { color: var(--accent-2); }
+.q-text {
+  font-size: clamp(18px, 3.6vmin, 54px); font-weight: 800; line-height: 1.25;
+  margin-top: clamp(2px, .5vmin, 8px); max-height: 22vh; overflow: auto;
+}
+.opt {
+  display: flex; align-items: center; gap: clamp(5px, .8vmin, 14px); text-align: left;
+  background: rgba(8, 14, 32, .55); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: clamp(7px, 1.1vmin, 18px);
+  font-size: clamp(12px, 1.7vmin, 26px); line-height: 1.3; transition: transform .08s, border-color .12s, background .12s;
+}
+.opt b {
+  flex: 0 0 auto; width: clamp(24px, 3.6vmin, 52px); height: clamp(24px, 3.6vmin, 52px);
+  display: grid; place-items: center; border-radius: 50%;
+  background: rgba(255, 255, 255, .14); font-size: clamp(12px, 1.8vmin, 28px);
+}
+.opt:hover { border-color: var(--accent); }
+.opt:active { transform: scale(.97); }
+.opt.correct { background: rgba(47, 208, 123, .85); border-color: var(--ok); color: #04140b; font-weight: 700; }
+.opt.correct b { background: rgba(0, 0, 0, .3); color: #fff; }
+.opt.wrong { background: rgba(255, 93, 108, .85); border-color: var(--danger); color: #1c0407; font-weight: 700; }
+.opt.wrong b { background: rgba(0, 0, 0, .3); color: #fff; }
+.opt:disabled { cursor: default; }
+
+/* ══════════ ARENA ══════════ */
+.arena {
+  position: relative; flex: 1 1 auto; min-height: clamp(150px, 24vmin, 340px);
+  display: flex; align-items: stretch; gap: clamp(6px, 1vmin, 18px);
+}
+.team {
+  flex: 0 0 clamp(110px, 16vmin, 260px);
+  border-radius: var(--radius); border: 1.5px solid var(--border);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: clamp(4px, .8vmin, 14px); padding: clamp(6px, 1vmin, 18px); text-align: center;
+}
+.team-left { background: rgba(56, 182, 255, .13); border-color: rgba(56, 182, 255, .5); }
+.team-right { background: rgba(255, 93, 108, .13); border-color: rgba(255, 93, 108, .5); }
+.team-name { font-size: clamp(13px, 2vmin, 32px); font-weight: 800; line-height: 1.2; }
+.team-left.active { box-shadow: inset 0 0 0 3px var(--blue), 0 0 24px rgba(56, 182, 255, .45); }
+.team-right.active { box-shadow: inset 0 0 0 3px var(--red), 0 0 24px rgba(255, 93, 108, .45); }
+.pull-count { color: var(--muted); font-size: clamp(11px, 1.5vmin, 22px); }
+.pull-count b { color: var(--text); font-size: 1.35em; }
+
+.rope-area {
+  position: relative; flex: 1 1 auto; border-radius: var(--radius);
+  border: 1px solid var(--border); background: linear-gradient(180deg, #14306b 0%, #0f254f 55%, #0c1e40 100%);
+  overflow: hidden;
+}
+/* Permukaan rumput mengikuti kaki karakter — disetel JS lewat --ground-top
+   (default 70% untuk kasus tali-rumput standar). */
+.ground { position: absolute; left: 0; right: 0; bottom: 0; top: var(--ground-top, 70%); background: linear-gradient(180deg, #2f8f4e, #1d6b38); }
+.danger-zone { position: absolute; bottom: 0; top: calc(var(--ground-top, 70%) - 6%); width: 22%; opacity: .35; }
+.danger-left { left: 0; background: repeating-linear-gradient(45deg, rgba(255,93,108,.55) 0 clamp(6px,1vmin,16px), transparent clamp(6px,1vmin,16px) clamp(12px,2vmin,32px)); }
+.danger-right { right: 0; background: repeating-linear-gradient(-45deg, rgba(255,93,108,.55) 0 clamp(6px,1vmin,16px), transparent clamp(6px,1vmin,16px) clamp(12px,2vmin,32px)); }
+
+/* garis tengah = garis kekalahan */
+.middle-line {
+  position: absolute; left: 50%; top: 0; bottom: 0; width: clamp(4px, .8vmin, 12px);
+  transform: translateX(-50%);
+  background: repeating-linear-gradient(180deg, #ffe066 0 clamp(8px,1.4vmin,22px), rgba(0,0,0,.55) clamp(8px,1.4vmin,22px) clamp(12px,2vmin,30px));
+  box-shadow: 0 0 18px rgba(255, 224, 102, .6); z-index: 3;
+}
+
+/* Tali = kurva SVG yang menghubungkan tangan kedua karakter (digambar JS).
+   vector-effect menjaga ketebalan garis tetap konsisten di layar besar. */
+.rope-svg {
+  position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2;
+  pointer-events: none; overflow: visible;
+}
+#ropePath {
+  fill: none; stroke: #b57e3f; stroke-width: clamp(4px, .8vmin, 10px);
+  stroke-linecap: round;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .45));
+}
+
+.critter {
+  position: absolute; top: 0; width: 100%; z-index: 3;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,.4));
+}
+/* Elemen krt (karakter) adalah wadah setinggi arena; SVG anaknya diposisikan
+   agar TANGAN (77/150 ≈ 51% tinggi karakter, tinggi karakter = 1,25 × lebar)
+   jatuh tepat di garis tali 46%. Lebar karakter = 12% lebar arena; kira-kira
+   tinggi karakter = 12% × (4/3 rasio arena) ≈ 16% tinggi arena → tangan di
+   8,2% tinggi arena dari atas karakter → karakter mulai 46% − 8,2% ≈ 37,8%.
+   Karena ukuran layar bervariasi, posisi tangan DISETEL PERSIS oleh JS. */
+.krt { position: absolute; inset: 0; pointer-events: none; }
+.boy { position: absolute; height: auto; } /* lebar & posisi dihitung persis oleh JS */
+.critter-left { color: var(--blue); }
+.critter-right { color: var(--red); } /* cermin dikendalikan JS lewat CSS var --flip */
+.critter-right .boy { transform: scaleX(var(--flip, -1)); transform-origin: 50% 50%; }
+
+/* simpul tali — satu per tim; mulai 5 langkah dari garis tengah dan tertarik
+   ke arah tengah oleh jawaban benar lawan. Posisi disetel dari JS.
+   Digambar murni dengan CSS (tanpa emoji) agar tampil di semua perangkat. */
+.knot {
+  position: absolute; top: 46%; transform: translate(-50%, -50%); z-index: 4;
+  transition: left .8s cubic-bezier(.34, 1.3, .64, 1);
+  width: clamp(26px, 4.4vmin, 64px); aspect-ratio: 1;
+}
+.knot-core {
+  position: absolute; left: 50%; top: 50%; width: 46%; aspect-ratio: 1;
+  transform: translate(-50%, -50%) rotate(45deg); border-radius: 22%;
+  border: clamp(3px, .5vmin, 8px) solid #8a5a28; background: rgba(255, 255, 255, .25);
+  z-index: 2;
+}
+.knot-base {
+  position: absolute; left: 50%; top: 50%; width: 92%; aspect-ratio: 1;
+  transform: translate(-50%, -50%); border-radius: 50%; opacity: .9;
+}
+.knot-left .knot-base { background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.55), transparent 45%), var(--blue); box-shadow: 0 0 16px rgba(56, 182, 255, .8); }
+.knot-right .knot-base { background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.55), transparent 45%), var(--red); box-shadow: 0 0 16px rgba(255, 93, 108, .8); }
+.knot.center-hit { animation: knot-win .45s ease-in-out infinite alternate; }
+@keyframes knot-win { from { transform: translate(-50%, -50%) scale(1); } to { transform: translate(-50%, -50%) scale(1.4); } }
+
+/* Kaki harus tetap di tanah — animasi dilepas; tarikan sudah terasa dari
+   kurva tali yang berubah & guncangan arena. */
+@media (prefers-reduced-motion: reduce) { .critter, .arena-shake { animation: none; } }
+
+.arena-shake { animation: arena-shake .45s ease-in-out; }
+@keyframes arena-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(calc(-1 * clamp(4px, .8vmin, 12px))); }
+  40% { transform: translateX(clamp(4px, .8vmin, 12px)); }
+  60% { transform: translateX(calc(-1 * clamp(2px, .4vmin, 6px))); }
+  80% { transform: translateX(clamp(2px, .4vmin, 6px)); }
+}
+
+/* ══════════ FEEDBACK ══════════ */
+.feedback {
+  position: absolute; inset: 0; z-index: 30; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: clamp(4px, 1.2vmin, 18px); text-align: center;
+  padding: clamp(10px, 2vmin, 30px); backdrop-filter: blur(3px);
+  animation: fb .2s ease-out;
+}
+@keyframes fb { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: none; } }
+.feedback.good { background: rgba(15, 122, 69, .86); }
+.feedback.bad { background: rgba(140, 27, 42, .86); }
+.feedback.neutral { background: rgba(50, 58, 92, .86); }
+.fb-head { font-size: clamp(24px, 6vmin, 96px); font-weight: 900; line-height: 1.05; }
+.fb-result { font-size: clamp(13px, 2vmin, 30px); font-weight: 600; }
+.fb-explain { font-size: clamp(12px, 1.7vmin, 26px); max-width: 90%; line-height: 1.5; opacity: .95; }
+
+/* ══════════ HASIL ══════════ */
+.result-wrap { margin: auto; width: 100%; max-width: 1100px; display: flex; flex-direction: column; align-items: center; gap: clamp(8px, 1.6vmin, 24px); }
+.trophy { font-size: clamp(56px, 12vmin, 160px); animation: trophy-bounce 1s ease-in-out infinite alternate; }
+@keyframes trophy-bounce { from { transform: translateY(0) scale(1); } to { transform: translateY(-8px) scale(1.06); } }
+@media (prefers-reduced-motion: reduce) { .trophy { animation: none; } .knot.center-hit { animation: none; } }
+#resultTitle { font-size: clamp(22px, 4vmin, 52px); }
+.result-sub { color: var(--muted); font-size: clamp(13px, 1.8vmin, 26px); text-align: center; }
+
+.stat-grid { display: flex; gap: clamp(8px, 1.4vmin, 22px); width: 100%; max-width: 760px; }
+.stat {
+  flex: 1; border-radius: var(--radius); border: 1.5px solid var(--border);
+  padding: clamp(10px, 1.8vmin, 28px); display: flex; flex-direction: column; align-items: center; gap: 2px;
+}
+.stat b { font-size: clamp(24px, 5vmin, 72px); }
+.stat span { color: var(--muted); font-size: clamp(11px, 1.5vmin, 20px); }
+.stat-a { background: rgba(56, 182, 255, .13); border-color: rgba(56, 182, 255, .5); }
+.stat-b { background: rgba(255, 93, 108, .13); border-color: rgba(255, 93, 108, .5); }
+.stat.draw { background: var(--surface); }
+
+.result-actions { display: flex; gap: clamp(6px, 1vmin, 14px); width: 100%; max-width: 720px; flex-wrap: wrap; }
+.result-actions .primary-btn { flex: 2 1 260px; }
+.result-actions .ghost-btn.big { flex: 1 1 200px; padding: clamp(11px, 1.6vmin, 22px); width: auto; }
+
+/* ══════════ TOAST ══════════ */
+.toast {
+  position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom) + 18px);
+  transform: translateX(-50%); background: #1e2a55; border: 1px solid var(--border);
+  color: #fff; padding: clamp(8px, 1.2vmin, 16px) clamp(14px, 2vmin, 28px);
+  border-radius: 999px; font-size: clamp(12px, 1.5vmin, 20px); z-index: 90; max-width: 90vw; text-align: center;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, .22); border-radius: 8px; }

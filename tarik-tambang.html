@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tarik Tambang — Game Interaktif PID</title>
+<link rel="icon" href="icon.svg">
+<link rel="stylesheet" href="tarik-tambang.css?v=20260924061400">
+</head>
+<body>
+
+<!-- ══════════════ LAYAR 1 — MENU ══════════════ -->
+<section id="screenMenu" class="screen">
+  <div class="menu-wrap">
+    <header class="menu-head">
+      <div class="brand">
+        <span class="brand-icon">🪢</span>
+        <div>
+          <h1>Tarik Tambang</h1>
+          <p class="sub">Game interaktif PID — jawab soal untuk menarik tali!</p>
+        </div>
+      </div>
+      <div class="head-actions">
+        <span class="badge" id="sourceBadge" title="Sumber soal">Bank bawaan</span>
+        <button class="icon-btn" id="btnFull" title="Layar penuh">⛶</button>
+      </div>
+    </header>
+
+    <main class="menu-grid">
+      <div class="panel">
+        <h2>⚙ Pengaturan Permainan</h2>
+
+        <label class="field">
+          <span>Mata pelajaran</span>
+          <select id="selSubject"></select>
+        </label>
+
+        <label class="field">
+          <span>Tingkat kesulitan</span>
+          <select id="selLevel">
+            <option value="mudah" selected>Mudah</option>
+            <option value="sedang">Sedang</option>
+            <option value="sulit">Sulit</option>
+          </select>
+        </label>
+
+        <div class="field">
+          <span>Nama Tim Biru (kiri)</span>
+          <input type="text" id="inpNameA" maxlength="18" placeholder="Tim Biru" value="Tim Biru">
+        </div>
+
+        <div class="field">
+          <span>Nama Tim Merah (kanan)</span>
+          <input type="text" id="inpNameB" maxlength="18" placeholder="Tim Merah" value="Tim Merah">
+        </div>
+
+        <details class="adv">
+          <summary>Pengaturan lanjutan</summary>
+
+          <label class="field">
+            <span>Soal per giliran</span>
+            <select id="selRot">
+              <option value="1" selected>Bergantian tiap soal</option>
+              <option value="2">2 soal bergantian</option>
+              <option value="3">3 soal bergantian</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Level lawan komputer (Tim Merah otomatis)</span>
+            <select id="selAI">
+              <option value="0" selected>Tidak — dua tim manusia</option>
+              <option value="0.45">Mudah (45% benar)</option>
+              <option value="0.65">Sedang (65% benar)</option>
+              <option value="0.85">Sulit (85% benar)</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Batas waktu per soal</span>
+            <select id="selTimer">
+              <option value="0">Tanpa waktu</option>
+              <option value="10">10 detik</option>
+              <option value="15">15 detik</option>
+              <option value="20" selected>20 detik</option>
+              <option value="30">30 detik</option>
+            </select>
+          </label>
+        </details>
+
+        <div class="rules">
+          <div class="rule blue"><b>🟦 Jawab benar</b><span>tali tertarik 1 langkah ke lawan</span></div>
+          <div class="rule red"><b>🟥 Tertarik 5 langkah</b><span>menyentuh garis tengah = kalah!</span></div>
+        </div>
+
+        <button class="primary-btn" id="btnStart">▶ Mulai Bermain</button>
+        <p class="hint" id="poolInfo"></p>
+        <a class="ghost-btn" href="index.html" style="text-align:center;">🎯 Kembali ke game Benar / Salah</a>
+      </div>
+
+      <div class="panel side">
+        <h2>📜 Cara Bermain</h2>
+        <ol class="howto">
+          <li>Bagi murid menjadi <b>dua tim</b>: Tim Biru (kiri) dan Tim Merah (kanan).</li>
+          <li>Giliran tim tampil di layar — tim itu <b>menyentuh jawaban A–D</b> di papan.</li>
+          <li><b>Benar</b> → tali tertarik <b>1 langkah</b> ke arah lawan. <b>Salah</b> → giliran pindah.</li>
+          <li>Penanda tali mulai <b>5 langkah</b> dari garis tengah di sisi masing-masing.</li>
+          <li>Jika penanda tali <b>menyentuh garis tengah</b> di sisi tim itu, <b>tim itu kalah</b>.</li>
+        </ol>
+        <p class="hint">Cocok untuk papan interaktif digital (PID): sentuh langsung jawaban di layar,
+          atau pakai mouse/keyboard <b>A · B · C · D</b>. Tombol ⛶ untuk layar penuh.</p>
+      </div>
+    </main>
+  </div>
+</section>
+
+<!-- ══════════════ LAYAR 2 — BERMAIN ══════════════ -->
+<section id="screenPlay" class="screen" hidden>
+  <div class="play-top">
+    <div class="chips">
+      <span class="chip" id="chipSubject">—</span>
+      <span class="chip" id="chipProgress">Soal 1</span>
+      <span class="chip turn" id="chipTurn">—</span>
+    </div>
+    <div class="play-actions">
+      <span class="timer-chip" id="timerChip" hidden><i id="timerBar"></i><b id="timerText">20</b></span>
+      <button class="icon-btn" id="btnSound" title="Suara">🔊</button>
+      <button class="icon-btn" id="btnFull2" title="Layar penuh">⛶</button>
+      <button class="icon-btn danger" id="btnQuit" title="Keluar">✕</button>
+    </div>
+  </div>
+
+  <div class="question-box">
+    <p class="q-label">Giliran <b id="turnName">—</b> · Benar = tarik 1 langkah!</p>
+    <p class="q-text" id="questionText">…</p>
+  </div>
+
+  <!-- ARENA TARIK TAMBAng -->
+  <div class="arena" id="arena">
+    <div class="team team-left" id="teamA">
+      <div class="team-name" id="labelA">Tim Biru</div>
+      <div class="pull-count" id="countA">0 tarikan</div>
+    </div>
+
+    <div class="rope-area">
+      <div class="middle-line"></div>
+      <div class="ground">
+        <div class="danger-zone danger-left" id="dangerLeft"></div>
+        <div class="danger-zone danger-right" id="dangerRight"></div>
+      </div>
+      <!-- Tali digambar sebagai kurva SVG: tegang dari tepi lapangan,
+           melewati badan kedua karakter, dan MELLENGUNG (kendor) di antara
+           kedua tangan. Posisi kurva disegarkan oleh JS tiap tarikan. -->
+      <svg class="rope-svg" id="ropeSvg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path id="ropePath" d="M 0 46 L 8 46 Q 50 56 92 46 L 100 46" vector-effect="non-scaling-stroke"/>
+      </svg>
+      <div class="knot knot-left" id="knotA"><i class="knot-base"></i><i class="knot-core"></i></div>
+      <div class="knot knot-right" id="knotB"><i class="knot-base"></i><i class="knot-core"></i></div>
+      <!-- Karakter penarik tali: anak laki-laki berikat kepala merah putih (SVG,
+           tanpa emoji agar tampil sama di semua perangkat). Warna baju tim
+           mengikuti warna currentColor masing-masing sisi. -->
+      <div class="critter critter-left krt" id="critterA">
+        <svg class="boy" viewBox="0 0 120 150" aria-hidden="true">
+          <!-- kaki -->
+          <rect x="48" y="112" width="10" height="30" rx="4" fill="#2b3a67"/>
+          <rect x="66" y="112" width="10" height="30" rx="4" fill="#2b3a67"/>
+          <rect x="45" y="138" width="15" height="7" rx="3" fill="#1b2440"/>
+          <rect x="64" y="138" width="15" height="7" rx="3" fill="#1b2440"/>
+          <!-- baju (warna tim) -->
+          <path d="M42 112 L47 82 Q60 72 73 82 L78 112 Z" fill="currentColor"/>
+          <!-- lengan menarik tali ke depan -->
+          <path d="M50 86 Q68 80 88 74" stroke="#ffd9b3" stroke-width="8" stroke-linecap="round" fill="none"/>
+          <path d="M66 90 Q84 88 100 82" stroke="#ffd9b3" stroke-width="8" stroke-linecap="round" fill="none"/>
+          <circle cx="90" cy="73" r="6" fill="#ffd9b3"/>
+          <circle cx="102" cy="81" r="6" fill="#ffd9b3"/>
+          <!-- kepala -->
+          <circle cx="60" cy="50" r="21" fill="#ffd9b3"/>
+          <!-- rambut -->
+          <path d="M39 50 a21 21 0 0 1 42 0 z" fill="#5b3a29"/>
+          <!-- ikat kepala bendera merah putih + ekornya -->
+          <path d="M40 43 q-14 0 -20 10" stroke="#e63946" stroke-width="6" stroke-linecap="round" fill="none"/>
+          <path d="M40 49 q-11 4 -14 13" stroke="#ffffff" stroke-width="5" stroke-linecap="round" fill="none"/>
+          <rect x="38" y="40" width="44" height="7" rx="3.5" fill="#e63946"/>
+          <rect x="38" y="47" width="44" height="5" rx="2.5" fill="#ffffff"/>
+          <!-- wajah -->
+          <circle cx="53" cy="58" r="2.4" fill="#33261e"/>
+          <circle cx="67" cy="58" r="2.4" fill="#33261e"/>
+          <path d="M54 65 q6 5 12 0" stroke="#b36b4c" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+      <div class="critter critter-right krt" id="critterB">
+        <svg class="boy" viewBox="0 0 120 150" aria-hidden="true">
+          <rect x="48" y="112" width="10" height="30" rx="4" fill="#2b3a67"/>
+          <rect x="66" y="112" width="10" height="30" rx="4" fill="#2b3a67"/>
+          <rect x="45" y="138" width="15" height="7" rx="3" fill="#1b2440"/>
+          <rect x="64" y="138" width="15" height="7" rx="3" fill="#1b2440"/>
+          <path d="M42 112 L47 82 Q60 72 73 82 L78 112 Z" fill="currentColor"/>
+          <path d="M50 86 Q68 80 88 74" stroke="#ffd9b3" stroke-width="8" stroke-linecap="round" fill="none"/>
+          <path d="M66 90 Q84 88 100 82" stroke="#ffd9b3" stroke-width="8" stroke-linecap="round" fill="none"/>
+          <circle cx="90" cy="73" r="6" fill="#ffd9b3"/>
+          <circle cx="102" cy="81" r="6" fill="#ffd9b3"/>
+          <circle cx="60" cy="50" r="21" fill="#ffd9b3"/>
+          <path d="M39 50 a21 21 0 0 1 42 0 z" fill="#5b3a29"/>
+          <path d="M40 43 q-14 0 -20 10" stroke="#e63946" stroke-width="6" stroke-linecap="round" fill="none"/>
+          <path d="M40 49 q-11 4 -14 13" stroke="#ffffff" stroke-width="5" stroke-linecap="round" fill="none"/>
+          <rect x="38" y="40" width="44" height="7" rx="3.5" fill="#e63946"/>
+          <rect x="38" y="47" width="44" height="5" rx="2.5" fill="#ffffff"/>
+          <circle cx="53" cy="58" r="2.4" fill="#33261e"/>
+          <circle cx="67" cy="58" r="2.4" fill="#33261e"/>
+          <path d="M54 65 q6 5 12 0" stroke="#b36b4c" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="team team-right" id="teamB">
+      <div class="team-name" id="labelB">Tim Merah</div>
+      <div class="pull-count" id="countB">0 tarikan</div>
+    </div>
+  </div>
+
+  <!-- Opsi jawaban di BAWAH arena tarik tambang -->
+  <div class="options" id="optWrap">
+    <button class="opt" data-i="0"><b>A</b><span>…</span></button>
+    <button class="opt" data-i="1"><b>B</b><span>…</span></button>
+    <button class="opt" data-i="2"><b>C</b><span>…</span></button>
+    <button class="opt" data-i="3"><b>D</b><span>…</span></button>
+  </div>
+
+  <div class="feedback" id="feedback" hidden>
+    <div class="fb-head" id="fbHead"></div>
+    <p class="fb-result" id="fbResult"></p>
+    <p class="fb-explain" id="fbExplain"></p>
+  </div>
+</section>
+
+<!-- ══════════════ LAYAR 3 — HASIL ══════════════ -->
+<section id="screenResult" class="screen" hidden>
+  <div class="result-wrap">
+    <div class="trophy" id="trophy">🏆</div>
+    <h2 id="resultTitle">Selamat!</h2>
+    <p class="result-sub" id="resultSub"></p>
+
+    <div class="stat-grid">
+      <div class="stat stat-a"><b id="statA">0</b><span id="statALabel">Tim Biru</span></div>
+      <div class="stat draw"><b id="statDraw">0</b><span>soal seri / lewat</span></div>
+      <div class="stat stat-b"><b id="statB">0</b><span id="statBLabel">Tim Merah</span></div>
+    </div>
+
+    <div class="result-actions">
+      <button class="primary-btn" id="btnAgain">🔁 Main lagi</button>
+      <button class="ghost-btn big" id="btnBackMenu">Menu utama</button>
+    </div>
+  </div>
+</section>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="tarik-tambang.js?v=20260924061400"></script>
+</body>
+</html>
