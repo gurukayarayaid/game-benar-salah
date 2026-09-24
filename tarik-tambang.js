@@ -1,12 +1,13 @@
 /* ══════════ Game Tarik Tambang — logika permainan ══════════
  *
- * Aturan:
- *  - Dua tim (Biru kiri, Merah kanan) menjawab soal pilihan ganda A–D secara
- *    bergantian di satu layar sentuh (PID).
- *  - Jawaban BENAR  → SIMPUL TALI LAWAN tertarik 1 langkah ke arah garis tengah.
- *  - Jawaban SALAH / waktu habis → tidak ada tarikan, giliran berpindah.
+ * Aturan (SIAPA CEPAT DIA DAPAT):
+ *  - Soal tampil di atas, kedua tim berlomba menekan jawaban di KARTU TIM
+ *    masing-masing (Biru kiri, Merah kanan) — tidak ada giliran.
+ *  - TIM PERTAMA yang menekan mendapat hak menjawab: jika benar → simpul tali
+ *    LAWAN tertarik 1 langkah ke garis tengah; jika salah → hak pindah ke tim
+ *    lawan (tim lawan masih boleh menjawab soal yang sama).
  *  - Simpul tali setiap tim mulai 5 langkah dari garis tengah. Jika simpul tim
- *    itu sudah MENYENTUH GARIS TENGAH (tertarik 5 kali), tim itu kalah.
+ *    itu sampai MENYENTUH GARIS TENGAH, tim itu kalah.
  *
  * Bank soal: www/game/questions-tt.json (pilihan ganda), format:
  *   { t: teks soal, o: [opsi A-D], a: indeks jawaban benar, e: penjelasan }
@@ -24,13 +25,13 @@
     level: 'mudah',
     nameA: 'Tim Biru',
     nameB: 'Tim Merah',
-    rot: 1,             // soal per giliran
+    rot: 1,             // (tidak dipakai lagi — dipertahankan demi kompatibilitas menu)
     aiLevel: 0,         // 0 = dua tim manusia; 0..1 = peluang benar komputer
     timerSec: 20,
     pool: [],           // soal yang tersisa
     used: 0,            // jumlah soal yang sudah dimainkan
-    turn: 'A',          // 'A' | 'B'
-    turnsInRound: 0,    // penghitung rotasi
+    turn: 'A',          // tim yang berhak menjawab saat ini ('' bila bebas)
+    turnsInRound: 0,
     pos: 0,             // posisi simpul Tim Biru: 0..WIN_STEPS (0 = penuh; WIN_STEPS = menyentuh tengah)
     posB: 0,            // posisi simpul Tim Merah: 0..WIN_STEPS
     pullsA: 0,          // tarikan yang berhasil dilakukan Tim Biru
@@ -50,14 +51,16 @@
     screenMenu: $('screenMenu'), screenPlay: $('screenPlay'), screenResult: $('screenResult'),
     selSubject: $('selSubject'), selLevel: $('selLevel'),
     inpNameA: $('inpNameA'), inpNameB: $('inpNameB'),
-    selRot: $('selRot'), selAI: $('selAI'), selTimer: $('selTimer'),
+    selAI: $('selAI'), selTimer: $('selTimer'),
     btnStart: $('btnStart'), btnFull: $('btnFull'), btnFull2: $('btnFull2'),
     sourceBadge: $('sourceBadge'), poolInfo: $('poolInfo'),
     // bermain
     chipSubject: $('chipSubject'), chipProgress: $('chipProgress'), chipTurn: $('chipTurn'),
     btnSound: $('btnSound'), btnQuit: $('btnQuit'),
     timerChip: $('timerChip'), timerBar: $('timerBar'), timerText: $('timerText'),
-    turnName: $('turnName'), questionText: $('questionText'), optWrap: $('optWrap'),
+    turnName: $('turnName'), questionText: $('questionText'),
+    optsA: document.querySelector('.team-opts[data-team="A"]'),
+    optsB: document.querySelector('.team-opts[data-team="B"]'),
     teamA: $('teamA'), teamB: $('teamB'), labelA: $('labelA'), labelB: $('labelB'),
     countA: $('countA'), countB: $('countB'),
     marker: $('marker'), arena: $('arena'),
@@ -162,12 +165,11 @@
     S.level = el.selLevel.value;
     S.nameA = el.inpNameA.value.trim() || 'Tim Biru';
     S.nameB = el.inpNameB.value.trim() || 'Tim Merah';
-    S.rot = parseInt(el.selRot.value, 10) || 1;
     S.aiLevel = parseFloat(el.selAI.value) || 0;
     S.timerSec = parseInt(el.selTimer.value, 10) || 0;
     S.pool = shuffle(raw.slice());
     S.allQuestions = raw.slice();
-    S.used = 0; S.turn = Math.random() < .5 ? 'A' : 'B';
+    S.used = 0; S.turn = '';   // kedua tim bebas berebut dari soal pertama
     S.turnsInRound = 0;
     S.pos = 0; S.posB = 0; S.pullsA = 0; S.pullsB = 0;
     S.scoreA = 0; S.scoreB = 0; S.draw = 0;
@@ -187,16 +189,13 @@
     nextQuestion();
   }
 
-  /* ── Ganti giliran ── */
-  function nextTurn() {
-    S.turnsInRound++;
-    if (S.turnsInRound >= S.rot) { S.turnsInRound = 0; S.turn = S.turn === 'A' ? 'B' : 'A'; }
-    updateTurnUI();
-  }
+  /* ── Hak menjawab (mode siapa cepat) ──
+     '' = keduanya bebas menekan; 'A'/'B' = hanya tim itu yang boleh menjawab
+     (terjadi setelah tim lawan salah — hak pindah ke lawan). */
+  function canAnswer(side) { return !S.locked && (S.turn === '' || S.turn === side); }
 
   function updateTurnUI() {
-    el.chipTurn.textContent = `Giliran: ${turnLabel()}`;
-    el.turnName.textContent = turnLabel();
+    el.chipTurn.textContent = S.turn === '' ? 'Tombol terbuka — siapa cepat!' : `Hak menjawab: ${turnLabel()}`;
     el.teamA.classList.toggle('active', S.turn === 'A');
     el.teamB.classList.toggle('active', S.turn === 'B');
   }
@@ -216,15 +215,19 @@
     // Acak urutan opsi agar jawaban tidak selalu di posisi sama
     const order = shuffle([0, 1, 2, 3]);
     S.correctIdx = order.indexOf(q.a);
-    [...el.optWrap.children].forEach((btn, i) => {
-      btn.disabled = false;
-      btn.classList.remove('correct', 'wrong');
-      btn.querySelector('span').textContent = q.o[order[i]];
-    });
+    S.turn = '';              // kedua tim bebas berlomba
+    for (const wrap of [el.optsA, el.optsB]) {
+      [...wrap.children].forEach((btn, i) => {
+        btn.disabled = false;
+        btn.classList.remove('correct', 'wrong');
+        btn.querySelector('span').textContent = q.o[order[i]];
+      });
+    }
 
     hideFeedback();
     S.locked = false;
     startTimer();
+    updateTurnUI();
     maybeAI();
   }
 
@@ -253,14 +256,14 @@
 
   /* ── Lawan komputer ── */
   function maybeAI() {
-    if (S.aiLevel <= 0 || S.turn !== 'B' || S.over) return;
+    if (S.aiLevel <= 0 || S.over) return;
     const willBeRight = Math.random() < S.aiLevel;
-    const delay = 1500 + Math.random() * 2500;
+    const delay = 1200 + Math.random() * 2200;   // berebut kecepatan dengan manusia
     const idx = willBeRight ? S.correctIdx : pickWrongIdx();
     setTimeout(() => {
-      if (S.over || S.locked || S.turn !== 'B') return;
-      const btn = el.optWrap.children[idx];
-      if (btn) onAnswer(idx, btn);
+      if (S.over || S.locked || !canAnswer('B')) return;
+      const btn = el.optsB.children[idx];
+      if (btn) onAnswer('B', idx, btn);
     }, delay);
   }
   function pickWrongIdx() {
@@ -268,44 +271,67 @@
     return wrong[Math.floor(Math.random() * wrong.length)];
   }
 
-  /* ── Menjawab ── */
-  function onAnswer(idx, btn) {
-    if (S.locked || S.over) return;
+  /* ── Menjawab (siapa cepat) ──
+     side = 'A' | 'B' — tim yang menekan tombol. Tim pertama mendapat hak
+     menjawab: benar → tarik; salah → hak pindah ke lawan (soal sama). */
+  function onAnswer(side, idx, btn) {
+    if (S.locked || S.over || !canAnswer(side)) return;
     S.locked = true;
     stopTimer();
-    [...el.optWrap.children].forEach(b => { b.disabled = true; });
+    lockAllOpts();
 
     const correct = idx === S.correctIdx;
     if (btn) btn.classList.add(correct ? 'correct' : 'wrong');
-    if (!correct && idx >= 0) {
-      el.optWrap.children[S.correctIdx].classList.add('correct');
-    }
 
-    const who = turnLabel();
+    const who = side === 'A' ? S.nameA : S.nameB;
+    const other = side === 'A' ? S.nameB : S.nameA;
     let head, result, explain = S.current.e;
 
     if (idx < 0) { // waktu habis
       head = '⏰ Waktu habis!';
-      result = `${who} tidak menjawab — tali tidak bergerak.`;
+      result = 'Tidak ada tim yang menjawab — tali tidak bergerak.';
       S.draw++;
       sndWrong();
       showFeedback('neutral', head, result, explain);
-      setTimeout(() => { if (!S.over) { nextTurn(); nextQuestion(); } }, PULL_ANIM_MS + 500);
+      setTimeout(() => { if (!S.over) nextQuestion(); }, PULL_ANIM_MS + 500);
       return;
     }
 
     if (correct) {
-      // Tim yang menjawab benar menarik simpul LAWAN 1 langkah menuju garis tengah.
-      if (S.turn === 'A') { S.posB++; S.pullsA++; } else { S.pos++; S.pullsB++; }
-      head = '✅ Benar!';
-      result = `${who} menarik tali lawan 1 langkah! 💪`;
-      S.turn === 'A' ? S.scoreA++ : S.scoreB++;
+      // Tim cepat yang benar menarik simpul LAWAN 1 langkah ke garis tengah.
+      if (side === 'A') { S.posB++; S.pullsA++; S.scoreA++; }
+      else { S.pos++; S.pullsB++; S.scoreB++; }
+      head = '⚡ Cepat & Benar!';
+      result = `${who} lebih dulu menjawab benar — menarik tali lawan 1 langkah! 💪`;
       sndCorrect();
       setTimeout(sndPull, 260);
     } else {
       head = '❌ Salah!';
-      result = `${who} tidak berhasil menarik tali.`;
+      if (S.turn === side) {
+        // tim yang dapat hak (setelah lawan salah) pun salah → soal lewat
+        result = `${who} salah — tidak ada yang menjawab benar.`;
+        S.draw++;
+        showFeedback('bad', head, result, explain);
+        sndWrong();
+        updateArena(false);
+        setTimeout(() => { if (!S.over) nextQuestion(); }, PULL_ANIM_MS + 600);
+        return;
+      }
+      // tim pertama salah → hak pindah ke lawan untuk soal yang sama
+      S.turn = side === 'A' ? 'B' : 'A';
+      result = `${who} salah lebih dulu — giliran menjawab pindah ke ${other}!`;
       sndWrong();
+      showFeedback('bad', head, result, explain);
+      updateArena(false);
+      setTimeout(() => {
+        if (S.over) return;
+        hideFeedback();
+        S.locked = false;
+        unlockAllOpts();
+        updateTurnUI();
+        maybeAI();
+      }, 1400);
+      return;
     }
 
     showFeedback(correct ? 'good' : 'bad', head, result, explain);
@@ -314,16 +340,18 @@
     setTimeout(() => {
       if (checkWin()) return;
       hideFeedback();
-      if (correct) {
-        // Pemenang mempertahankan giliran saat rot=1; tetap rotasi bila rot>1
-        S.turnsInRound++;
-        if (S.turnsInRound >= S.rot) { S.turnsInRound = 0; S.turn = S.turn === 'A' ? 'B' : 'A'; }
-        updateTurnUI();
-      } else {
-        nextTurn();
-      }
       nextQuestion();
     }, PULL_ANIM_MS + 600);
+  }
+
+  function lockAllOpts() {
+    for (const wrap of [el.optsA, el.optsB]) [...wrap.children].forEach(b => { b.disabled = true; });
+  }
+  function unlockAllOpts() {
+    for (const wrap of [el.optsA, el.optsB]) [...wrap.children].forEach(b => {
+      b.disabled = false;
+      b.classList.remove('correct', 'wrong');
+    });
   }
 
   /* ── Arena ── */
@@ -463,18 +491,25 @@
     else document.exitFullscreen?.();
   }
 
-  /* ── Keyboard (cadangan untuk PID tanpa sentuhan) ── */
+  /* ── Keyboard (cadangan untuk PID tanpa sentuhan) ──
+     Q W E R = jawaban tim Biru · U I O P = jawaban Tim Merah */
   document.addEventListener('keydown', e => {
     if (el.screenPlay.hidden || S.over) return;
     const k = e.key.toUpperCase();
-    const map = { A: 0, B: 1, C: 2, D: 3, '1': 0, '2': 1, '3': 2, '4': 3 };
-    if (k in map && !S.locked) onAnswer(map[k], el.optWrap.children[map[k]]);
+    const mapB = { Q: 0, W: 1, E: 2, R: 3 };
+    const mapR = { U: 0, I: 1, O: 2, P: 3 };
+    if (k in mapB && canAnswer('A')) onAnswer('A', mapB[k], el.optsA.children[mapB[k]]);
+    else if (k in mapR && canAnswer('B')) onAnswer('B', mapR[k], el.optsB.children[mapR[k]]);
   });
 
   /* ── Event listeners ── */
-  el.optWrap.addEventListener('click', e => {
+  el.optsA.addEventListener('click', e => {
     const btn = e.target.closest('.opt');
-    if (btn && !btn.disabled) onAnswer(parseInt(btn.dataset.i, 10), btn);
+    if (btn && !btn.disabled) onAnswer('A', parseInt(btn.dataset.i, 10), btn);
+  });
+  el.optsB.addEventListener('click', e => {
+    const btn = e.target.closest('.opt');
+    if (btn && !btn.disabled) onAnswer('B', parseInt(btn.dataset.i, 10), btn);
   });
   el.btnStart.addEventListener('click', startGame);
   el.btnFull.addEventListener('click', toggleFullscreen);

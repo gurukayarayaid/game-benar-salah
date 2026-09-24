@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Tarik Tambang — Game Interaktif PID</title>
 <link rel="icon" href="icon.svg">
-<link rel="stylesheet" href="tarik-tambang.css?v=20260924061400">
+<link rel="stylesheet" href="tarik-tambang.css?v=20260924070316">
 </head>
 <body>
 
@@ -56,15 +56,6 @@
 
         <details class="adv">
           <summary>Pengaturan lanjutan</summary>
-
-          <label class="field">
-            <span>Soal per giliran</span>
-            <select id="selRot">
-              <option value="1" selected>Bergantian tiap soal</option>
-              <option value="2">2 soal bergantian</option>
-              <option value="3">3 soal bergantian</option>
-            </select>
-          </label>
 
           <label class="field">
             <span>Level lawan komputer (Tim Merah otomatis)</span>
@@ -131,15 +122,22 @@
   </div>
 
   <div class="question-box">
-    <p class="q-label">Giliran <b id="turnName">—</b> · Benar = tarik 1 langkah!</p>
+    <p class="q-label">Siapa cepat, dia dapat! Sentuh jawaban di kartu timmu</p>
     <p class="q-text" id="questionText">…</p>
   </div>
 
   <!-- ARENA TARIK TAMBAng -->
   <div class="arena" id="arena">
+    <!-- Kartu Tim Biru: jumlah tarikan di ATAS kartu, opsi jawaban di kartu -->
     <div class="team team-left" id="teamA">
+      <div class="pull-count" id="countA"><b>0</b> tarikan</div>
       <div class="team-name" id="labelA">Tim Biru</div>
-      <div class="pull-count" id="countA">0 tarikan</div>
+      <div class="team-opts" data-team="A">
+        <button class="opt" data-i="0"><b>A</b><span>…</span></button>
+        <button class="opt" data-i="1"><b>B</b><span>…</span></button>
+        <button class="opt" data-i="2"><b>C</b><span>…</span></button>
+        <button class="opt" data-i="3"><b>D</b><span>…</span></button>
+      </div>
     </div>
 
     <div class="rope-area">
@@ -213,17 +211,15 @@
     </div>
 
     <div class="team team-right" id="teamB">
+      <div class="pull-count" id="countB"><b>0</b> tarikan</div>
       <div class="team-name" id="labelB">Tim Merah</div>
-      <div class="pull-count" id="countB">0 tarikan</div>
+      <div class="team-opts" data-team="B">
+        <button class="opt" data-i="0"><b>A</b><span>…</span></button>
+        <button class="opt" data-i="1"><b>B</b><span>…</span></button>
+        <button class="opt" data-i="2"><b>C</b><span>…</span></button>
+        <button class="opt" data-i="3"><b>D</b><span>…</span></button>
+      </div>
     </div>
-  </div>
-
-  <!-- Opsi jawaban di BAWAH arena tarik tambang -->
-  <div class="options" id="optWrap">
-    <button class="opt" data-i="0"><b>A</b><span>…</span></button>
-    <button class="opt" data-i="1"><b>B</b><span>…</span></button>
-    <button class="opt" data-i="2"><b>C</b><span>…</span></button>
-    <button class="opt" data-i="3"><b>D</b><span>…</span></button>
   </div>
 
   <div class="feedback" id="feedback" hidden>
@@ -255,6 +251,6 @@
 
 <div id="toast" class="toast" hidden></div>
 
-<script src="tarik-tambang.js?v=20260924061400"></script>
+<script src="tarik-tambang.js?v=20260924070316"></script>
 </body>
 </html>
